@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+	<script src="js/pixi.min.js"></script>
+	<script src="js/controls.js"></script>
+	<script src="js/setup.js"></script>
+</head>
+<body>
+	<script>
+		//Aliases
+		const Application = PIXI.Application,
+		loader = PIXI.Loader.shared,
+		resources = PIXI.Loader.shared.resources,
+		Sprite = PIXI.Sprite,
+		tilingSprite = PIXI.TilingSprite;
+
+		//Create a Pixi Application
+		const app = new Application({ 
+			width: 512, 
+			height: 512,                       
+			antialias: true, 
+			transparent: false, 
+			resolution: 1
+			}
+		);
+
+		// load our assets
+		loader
+		.add("assets/maps/characters.json")
+		.add("assets/maps/tiles.json")
+		.load(setup);
+
+		// initialize our sprite
+		let floor, handsome, id, tiles, state;
+
+		// gameloop
+		function gameLoop(delta) {
+			// update the current state
+			state(delta);
+		}
+
+		// play
+		function play(delta) {
+			handsome.x += handsome.vx;
+			handsome.y += handsome.vy;
+		}
+
+		//Add the canvas that Pixi automatically created for you to the HTML document
+		document.body.appendChild(app.view);
+		</script>
+	</body>
+	</html>
