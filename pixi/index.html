@@ -2,6 +2,8 @@
 <html>
 <head>
 	<script src="js/pixi.min.js"></script>
+	<script src="js/spritemap.js"></script>
+	<script src="js/texturemap.js"></script>
 	<script src="js/controls.js"></script>
 	<script src="js/setup.js"></script>
 </head>
@@ -9,10 +11,13 @@
 	<script>
 		//Aliases
 		const Application = PIXI.Application,
+		base = PIXI.BaseTexture,
 		loader = PIXI.Loader.shared,
 		resources = PIXI.Loader.shared.resources,
 		Sprite = PIXI.Sprite,
-		tilingSprite = PIXI.TilingSprite;
+		tileMap = PIXI.Tilemap,
+		tilingSprite = PIXI.TilingSprite,
+		utils = PIXI.utils;
 
 		//Create a Pixi Application
 		const app = new Application({ 
@@ -26,8 +31,8 @@
 
 		// load our assets
 		loader
-		.add("assets/maps/characters.json")
-		.add("assets/maps/tiles.json")
+		.add("characters","assets/maps/characters.json")
+		.add("tiles","assets/maps/tiles.json")
 		.load(setup);
 
 		// initialize our sprite

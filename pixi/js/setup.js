@@ -1,21 +1,55 @@
 function setup() {
-	// try to add a tile floor
-	tiles = resources["assets/tiles.json"].textures;
-	floor = new tilingSprite(tiles["tiles-11.png"], 512, 512);
-	floor.position.x = 0;
-	floor.position.y = 0;
-	floor.tilePosition.x = 0;
-	floor.tilePosition.y = 0;
-	app.stage.addChild(floor);
+	// Get ground texture by its descriptive name 
+	groundTextureMap = nameTextures();
+	groundTextureName = groundTextureMap.get("grass-light-none");
 
-	// add our sprite
-	id = resources["assets/characters.json"].textures;
-	handsome = new Sprite(id["characters-4.png"]);
+	groundTiles = resources["tiles"].textures;
+	/* a tilingSprite.
+	   It's good for just repeating a tile indefinitely,
+	   but we want to paint a background scene. */
+	ground = new tilingSprite(groundTiles[groundTextureName], 512, 512);
+	ground.position.x = 0;
+	ground.position.y = 0;
+	ground.tilePosition.x = 0;
+	ground.tilePosition.y = 0;
+	app.stage.addChild(ground);
+
+	// Get character by its descriptive name
+	spriteMap = nameSprites();
+	spriteName = spriteMap.get("handsome-still-forward");
+
+	// add our player
+	characters = resources["characters"].textures;
+	handsome = new Sprite(characters[spriteName]);
 	handsome.y = 256;
 	handsome.vx = 0;
 	handsome.vy = 0;
 	app.stage.addChild(handsome);
 
+	// establish key commands and logic
+	keyLogic();
+
+	// Set the game state
+	state = play;
+
+	// Start the game loop
+	app.ticker.add((delta) => gameLoop(delta));
+}
+
+function addSprite(map,textureString, resourceString, x = 0, y = 0, vx = 0, vy = 0) {
+	let textureName = map.get(textureString);
+	let textures = resources[resourceString].textures;
+
+	img = new Sprite(textures[textureName]);
+	img.x = x;
+	img.y = y;
+	img.vx = vx;
+	img.vy = vy;
+	app.stage.addChild(img);
+
+}
+
+function keyLogic() {
 	// Create keyboard objects and logic
 	const left = keyboard("ArrowLeft"),
 	up = keyboard("ArrowUp"),
@@ -71,10 +105,4 @@ function setup() {
 			handsome.vy = 0;
 		}
 	};
-
-	// Set the game state
-	state = play;
-
-	// Start the game loop
-	app.ticker.add((delta) => gameLoop(delta));
 }
