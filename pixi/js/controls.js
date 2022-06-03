@@ -1,4 +1,6 @@
-// Keyboard function
+/*
+* 	Given a key value, listens for that key being pressed down and released
+*/
 function keyboard(value) {
 	const key = {};
 	key.value = value;

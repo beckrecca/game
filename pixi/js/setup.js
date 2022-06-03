@@ -1,34 +1,31 @@
 function setup() {
-	// Get ground texture by its descriptive name 
-	groundTextureMap = nameTextures();
-	groundTextureName = groundTextureMap.get("grass-light-none");
+	// Get our mapped out images
+	backgroundMap = nameBackgrounds(); // background resource
+	buildTextureMap = nameTextures(); // build resource
+	spriteMap = nameSprites(); // characters resource
 
-	groundTiles = resources["tiles"].textures;
-	/* a tilingSprite.
-	   It's good for just repeating a tile indefinitely,
-	   but we want to paint a background scene. */
-	ground = new tilingSprite(groundTiles[groundTextureName], 512, 512);
-	ground.position.x = 0;
-	ground.position.y = 0;
-	ground.tilePosition.x = 0;
-	ground.tilePosition.y = 0;
-	app.stage.addChild(ground);
+	// Initialize sprite resources
+	backgroundTextures = resources["background"].textures;
+	buildTextures = resources["build"].textures;
+	characterTextures = resources["characters"].textures;
 
-	// Get character by its descriptive name
-	spriteMap = nameSprites();
-	spriteName = spriteMap.get("handsome-still-forward");
+	// Pick a background texture
+	backgroundTextureName = backgroundMap.get("grass-full-311");
 
-	// add our player
-	characters = resources["characters"].textures;
-	handsome = new Sprite(characters[spriteName]);
-	handsome.y = 256;
-	handsome.vx = 0;
-	handsome.vy = 0;
-	app.stage.addChild(handsome);
+	// Use a tiling sprite for our background
+	background = new tilingSprite(backgroundTextures[backgroundTextureName], 512, 512);
+	background.position.x = 0;
+	background.position.y = 0;
+	background.tilePosition.x = 0;
+	background.tilePosition.y = 0;
+	app.stage.addChild(background);
+
+	// Let's add our handsome player to the center
+	handsome = addSprite(spriteMap, "handsome-still-forward", "characters", 256, 256);
 
 	// establish key commands and logic
-	keyLogic();
-
+	keyLogic(characterTextures);
+	
 	// Set the game state
 	state = play;
 
@@ -37,30 +34,65 @@ function setup() {
 }
 
 function addSprite(map,textureString, resourceString, x = 0, y = 0, vx = 0, vy = 0) {
+	// Get the name of the texture for this image from our image map
 	let textureName = map.get(textureString);
+	// Get the texture from the image we loaded into resources
 	let textures = resources[resourceString].textures;
 
+	// Create a new sprite from this texture
 	img = new Sprite(textures[textureName]);
 	img.x = x;
 	img.y = y;
 	img.vx = vx;
 	img.vy = vy;
 	app.stage.addChild(img);
-
+	return img;
 }
 
-function keyLogic() {
+/*
+*	Listens for keyboard events and moves our handsome player in response.
+*/
+function keyLogic(textures) {
 	// Create keyboard objects and logic
 	const left = keyboard("ArrowLeft"),
 	up = keyboard("ArrowUp"),
 	right = keyboard("ArrowRight"),
 	down = keyboard("ArrowDown");
 
+	// handsome's textures
+	const moveRight = spriteMap.get("handsome-moving-right");
+	const moveRightAlt = spriteMap.get("handsome-moving-alt-right");
+	const moveLeft = spriteMap.get("handsome-moving-left");
+	const moveLeftAlt = spriteMap.get("handsome-moving-alt-left");
+	const moveUp = spriteMap.get("handsome-moving-back");
+	const moveUpAlt = spriteMap.get("handsome-moving-alt-back");
+	const moveDown = spriteMap.get("handsome-moving-forward");
+	const moveDownAlt = spriteMap.get("handsome-moving-alt-forward");
+	const still = spriteMap.get("handsome-still-forward");
+	movingTextures = resources["characters"].textures;
+
+	let leftInterval, rightInterval, upInterval, downInterval;
+
+
   	//Left arrow key `press` method
   	left.press = () => {
 	    //Change the handsome's velocity when the key is pressed
 	    handsome.vx = -5;
 	    handsome.vy = 0;
+	    handsome.texture = movingTextures[moveLeft];
+	    alt = false;
+	    leftInterval = setInterval(function() {
+	    	alt = !alt;
+	    	if (alt) {
+	    		handsome.texture = movingTextures[moveLeftAlt];
+	    	}
+	    	else {
+	    		handsome.texture = movingTextures[moveLeft];
+	    	}
+	    }, 250);
+	    clearInterval(rightInterval);
+	    clearInterval(downInterval);
+	    clearInterval(upInterval);
 	};
 
   	//Left arrow key `release` method
@@ -70,6 +102,8 @@ function keyLogic() {
 	    //Stop the handsome
 	    if (!right.isDown && handsome.vy === 0) {
 	    	handsome.vx = 0;
+	    	handsome.texture = movingTextures[still];
+	    	clearInterval(leftInterval);
 	    }
 	};
 
@@ -77,10 +111,26 @@ function keyLogic() {
 	up.press = () => {
 			handsome.vy = -5;
 			handsome.vx = 0;
+			handsome.texture = movingTextures[moveUp];
+			alt = false;
+		    upInterval = setInterval(function() {
+		    	alt = !alt;
+		    	if (alt) {
+		    		handsome.texture = movingTextures[moveUpAlt];
+		    	}
+		    	else {
+		    		handsome.texture = movingTextures[moveUp];
+		    	}
+			}, 250);
+			clearInterval(rightInterval);
+	    	clearInterval(downInterval);
+	    	clearInterval(leftInterval);
 		};
 	up.release = () => {
 		if (!down.isDown && handsome.vx === 0) {
 			handsome.vy = 0;
+			handsome.texture = movingTextures[still];
+			clearInterval(upInterval);
 		}
 	};
 
@@ -88,10 +138,26 @@ function keyLogic() {
 	right.press = () => {
 			handsome.vx = 5;
 			handsome.vy = 0;
+			handsome.texture = movingTextures[moveRight];
+			alt = false;
+		    rightInterval = setInterval(function() {
+		    	alt = !alt;
+		    	if (alt) {
+		    		handsome.texture = movingTextures[moveRightAlt];
+		    	}
+		    	else {
+		    		handsome.texture = movingTextures[moveRight];
+		    	}
+			}, 250);
+			clearInterval(leftInterval);
+	    	clearInterval(downInterval);
+	    	clearInterval(upInterval);
 		};
 	right.release = () => {
 		if (!left.isDown && handsome.vy === 0) {
 			handsome.vx = 0;
+			handsome.texture = movingTextures[still];
+			clearInterval(rightInterval);
 		}
 	};
 
@@ -99,10 +165,27 @@ function keyLogic() {
 	down.press = () => {
 		handsome.vy = 5;
 		handsome.vx = 0;
+		handsome.texture = movingTextures[moveDown];
+		alt = false;
+	    downInterval = setInterval(function() {
+	    	alt = !alt;
+	    	if (alt) {
+	    		handsome.texture = movingTextures[moveDownAlt];
+	    	}
+	    	else {
+	    		handsome.texture = movingTextures[moveDown];
+	    	}
+		}, 250);
+		clearInterval(rightInterval);
+	    clearInterval(leftInterval);
+	    clearInterval(upInterval);
 	};
 	down.release = () => {
 		if (!up.isDown && handsome.vx === 0) {
 			handsome.vy = 0;
+			handsome.texture = movingTextures[still];
+			clearInterval(downInterval);
 		}
 	};
 }
+

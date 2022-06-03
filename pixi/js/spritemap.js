@@ -107,32 +107,13 @@ function nameSprites() {
 	let name, motion, facing;
 
 	for (let t = 0; t < tileCount; t++) {
-		//console.log("\nTile Number: " + t.toString());
-
+		// get the x,y position from a 12 x 8 grid
 		xpos = t % x;
-		//console.log("xpos: " + xpos);
-
 		ypos = Math.floor(t / x);
-		//console.log("ypos: " + ypos);
-
 		name = getSpriteName(xpos,ypos);
-
-		//console.log("Name: " + name);
-
 		motion = getMotion(t);
-
-		//console.log("Motion: " + motion);
-
 		facing = getFacing(ypos);
-
-		//console.log("Facing: " + facing);
-
 		let namestring = name + '-' + motion + '-' + facing;
-
-		//console.log("New name of tile: " + namestring);
-
-		//console.log("Real name of tile: " + "tiles-" + t.toString() + ".png");
-
 		tiles.set(namestring,"characters-" + t.toString() + ".png");
 	}
 	return tiles;

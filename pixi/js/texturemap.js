@@ -72,32 +72,13 @@ function nameTextures() {
 	let name, light, borders;
 
 	for (let t = 0; t < tileCount; t++) {
-		//console.log("\nTile Number: " + t.toString());
-
+		// get the x,y position from a grid of 12 x 5
 		xpos = t % x;
-		//console.log("xpos: " + xpos.toString());
-
 		ypos = Math.floor(t / x);
-		//console.log("ypos: " + ypos.toString());
-
 		name = getTextureName(xpos);
-
-		//console.log("Name: " + name);
-
 		light = getLight(ypos);
-
-		//console.log("Light: " + light);
-
 		borders = getBorders(xpos,ypos);
-
-		//console.log("Borders: " + borders);
-
 		let namestring = name + '-' + light + '-' + borders;
-
-		//console.log("New name of tile: " + namestring);
-
-		//console.log("Real name of tile: " + "tiles-" + t.toString() + ".png");
-
 		tiles.set(namestring,"tiles-" + t.toString() + ".png");
 	}
 	return tiles;
