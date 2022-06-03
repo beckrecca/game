@@ -4,6 +4,7 @@
 	<script src="js/pixi.min.js"></script>
 	<script src="js/scene.js"></script>
 	<script src="js/backgroundmap.js"></script>
+	<script src="js/interactmap.js"></script>
 	<script src="js/spritemap.js"></script>
 	<script src="js/texturemap.js"></script>
 	<script src="js/controls.js"></script>
@@ -36,9 +37,11 @@
 
 		// load our assets
 		loader
-		.add("characters","assets/maps/characters.json")
-		.add("build","assets/maps/tiles.json")
 		.add("background","assets/maps/background.json")
+		.add("build","assets/maps/tiles.json")
+		.add("characters","assets/maps/characters.json")
+		.add("environment","assets/maps/environment.json")
+		.add("interactives","assets/maps/interactives.json")
 		.load(setup);
 
 		// initialize our sprite

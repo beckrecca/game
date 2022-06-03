@@ -1,13 +1,17 @@
 function setup() {
-	// Get our mapped out images
+	// Get our mapped out images - turns json file frames into readable names
 	backgroundMap = nameBackgrounds(); // background resource
 	buildTextureMap = nameTextures(); // build resource
 	spriteMap = nameSprites(); // characters resource
+	interactMap = nameInteractiveObjects(); // interactives resource
+	// not necessary for environment
 
 	// Initialize sprite resources
 	backgroundTextures = resources["background"].textures;
 	buildTextures = resources["build"].textures;
 	characterTextures = resources["characters"].textures;
+	decorTextures = resources["environment"].textures;
+	interactiveTextures = resources["interactives"].textures;
 
 	// Pick a background texture
 	backgroundTextureName = backgroundMap.get("grass-full-311");
@@ -21,7 +25,15 @@ function setup() {
 	app.stage.addChild(background);
 
 	// Let's add our handsome player to the center
-	handsome = addSprite(spriteMap, "handsome-still-forward", "characters", 256, 256);
+	handsome = addSpriteFromMap(spriteMap, "handsome-still-forward", "characters", 256, 256);
+
+	// add some flowers? scenery?
+	for (let i = 0; i < 10; i++) {
+		xpos = Math.random() * 512;
+		ypos = Math.random() * 512;
+		flowers = addSprite(decorTextures, "flowers.png", xpos, ypos);
+	}
+
 
 	// establish key commands and logic
 	keyLogic(characterTextures);
@@ -33,13 +45,18 @@ function setup() {
 	app.ticker.add((delta) => gameLoop(delta));
 }
 
-function addSprite(map,textureString, resourceString, x = 0, y = 0, vx = 0, vy = 0) {
+function addSpriteFromMap(map,textureString, resourceString, x = 0, y = 0, vx = 0, vy = 0) {
 	// Get the name of the texture for this image from our image map
 	let textureName = map.get(textureString);
 	// Get the texture from the image we loaded into resources
 	let textures = resources[resourceString].textures;
 
 	// Create a new sprite from this texture
+	img = addSprite(textures, textureName, x, y, vx, vy);
+	return img;
+}
+
+function addSprite (textures, textureName, x = 0, y = 0, vx = 0, vy = 0 ) {
 	img = new Sprite(textures[textureName]);
 	img.x = x;
 	img.y = y;
