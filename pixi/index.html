@@ -55,8 +55,29 @@
 
 		// play
 		function play(delta) {
-			handsome.x += handsome.vx;
-			handsome.y += handsome.vy;
+			// check where our player is
+			handsomeXpos = handsome.getGlobalPosition().x;
+			handsomeYpos = handsome.getGlobalPosition().y;
+
+			// if handsome is about to leave the scene, stop him
+			if (handsomeXpos > 0 && handsomeXpos < 488) {
+				handsome.x += handsome.vx;
+			}
+			else if (handsomeXpos <= 0 && handsome.vx > 0) {
+				handsome.x += handsome.vx;
+			}
+			else if (handsomeXpos >= 480 && handsome.vx < 0) {
+				handsome.x += handsome.vx;
+			}
+			if (handsomeYpos > 0 && handsomeYpos < 480) {
+				handsome.y += handsome.vy;
+			}
+			else if (handsomeYpos <= 0 && handsome.vy > 0) {
+				handsome.y += handsome.vy;
+			}
+			else if (handsomeYpos >= 480 && handsome.vy < 0) {
+				handsome.y += handsome.vy;
+			}
 		}
 
 		//Add the canvas that Pixi automatically created for you to the HTML document

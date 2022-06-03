@@ -24,9 +24,6 @@ function setup() {
 	background.tilePosition.y = 0;
 	app.stage.addChild(background);
 
-	// Let's add our handsome player to the center
-	handsome = addSpriteFromMap(spriteMap, "handsome-still-forward", "characters", 256, 256);
-
 	// add some flowers? scenery?
 	for (let i = 0; i < 10; i++) {
 		xpos = Math.random() * 512;
@@ -34,6 +31,8 @@ function setup() {
 		flowers = addSprite(decorTextures, "flowers.png", xpos, ypos);
 	}
 
+	// Let's add our handsome player to the center
+	handsome = addSpriteFromMap(spriteMap, "handsome-still-forward", "characters", 256, 256);
 
 	// establish key commands and logic
 	keyLogic(characterTextures);
@@ -67,7 +66,7 @@ function addSprite (textures, textureName, x = 0, y = 0, vx = 0, vy = 0 ) {
 }
 
 /*
-*	Listens for keyboard events and moves our handsome player in response.
+*	Listens for keyboard events and moves/animates our handsome player in response.
 */
 function keyLogic(textures) {
 	// Create keyboard objects and logic
@@ -86,7 +85,7 @@ function keyLogic(textures) {
 	const moveDown = spriteMap.get("handsome-moving-forward");
 	const moveDownAlt = spriteMap.get("handsome-moving-alt-forward");
 	const still = spriteMap.get("handsome-still-forward");
-	movingTextures = resources["characters"].textures;
+	movingTextures = textures;
 
 	let leftInterval, rightInterval, upInterval, downInterval;
 
@@ -94,7 +93,7 @@ function keyLogic(textures) {
   	//Left arrow key `press` method
   	left.press = () => {
 	    //Change the handsome's velocity when the key is pressed
-	    handsome.vx = -5;
+	    handsome.vx = -3;
 	    handsome.vy = 0;
 	    handsome.texture = movingTextures[moveLeft];
 	    alt = false;
@@ -126,7 +125,7 @@ function keyLogic(textures) {
 
 	//Up
 	up.press = () => {
-			handsome.vy = -5;
+			handsome.vy = -3;
 			handsome.vx = 0;
 			handsome.texture = movingTextures[moveUp];
 			alt = false;
@@ -153,7 +152,7 @@ function keyLogic(textures) {
 
 	//Right
 	right.press = () => {
-			handsome.vx = 5;
+			handsome.vx = 3;
 			handsome.vy = 0;
 			handsome.texture = movingTextures[moveRight];
 			alt = false;
@@ -180,7 +179,7 @@ function keyLogic(textures) {
 
 	//Down
 	down.press = () => {
-		handsome.vy = 5;
+		handsome.vy = 3;
 		handsome.vx = 0;
 		handsome.texture = movingTextures[moveDown];
 		alt = false;
