@@ -27,10 +27,10 @@ def animations(r,name):
 
 
 json_string = '{"frames":{'
-name = 'interactives'
+name = 'liquids'
 count = 0
-for y in range(8):
-	for x in range(12):
+for y in range(9):
+	for x in range(6):
 		json_string += frame(x,y,name,count) + ','
 		count += 1
 # remove final comma

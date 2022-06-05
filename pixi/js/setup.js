@@ -4,7 +4,7 @@ function setup() {
 	buildTextureMap = nameTextures(); // build resource
 	spriteMap = nameSprites(); // characters resource
 	interactMap = nameInteractiveObjects(); // interactives resource
-	// not necessary for environment
+	// not necessary for environment, paths, liquids
 
 	// Initialize sprite resources
 	backgroundTextures = resources["background"].textures;
@@ -12,7 +12,17 @@ function setup() {
 	characterTextures = resources["characters"].textures;
 	decorTextures = resources["environment"].textures;
 	interactiveTextures = resources["interactives"].textures;
+	liquidTextures = resources["liquids"].textures;
+	pathTextures = resources["paths"].textures;
 
+	// Add a new background in scene.js
+	let background = quickBackground("green");
+	greenScene = sceneBackgroundHelper(background, 448, 448);
+	greenScene.x = 32;
+	greenScene.y = 32;
+	app.stage.addChild(greenScene);
+
+/**
 	// Pick a background texture
 	backgroundTextureName = backgroundMap.get("grass-full-311");
 
@@ -28,11 +38,12 @@ function setup() {
 	for (let i = 0; i < 10; i++) {
 		xpos = Math.random() * 512;
 		ypos = Math.random() * 512;
-		flowers = addSprite(decorTextures, "flowers.png", xpos, ypos);
-	}
+		pot = addSpriteFromMap(interactMap, interactiveTextures, "pot-left-whole", xpos, ypos);
+	} **/
 
 	// Let's add our handsome player to the center
-	handsome = addSpriteFromMap(spriteMap, "handsome-still-forward", "characters", 256, 256);
+	handsome = addSpriteFromMap(spriteMap, characterTextures, "handsome-still-forward", 256, 256);
+	
 
 	// establish key commands and logic
 	keyLogic(characterTextures);
@@ -44,11 +55,18 @@ function setup() {
 	app.ticker.add((delta) => gameLoop(delta));
 }
 
-function addSpriteFromMap(map,textureString, resourceString, x = 0, y = 0, vx = 0, vy = 0) {
+function createSprite(textures, textureName, x = 0, y = 0, vx = 0, vy = 0) {
+	img = new Sprite(textures[textureName]);
+	img.x = x;
+	img.y = y;
+	img.vx = vx;
+	img.vy = vy;
+	return img;
+}
+
+function addSpriteFromMap(map, textures, textureString, x = 0, y = 0, vx = 0, vy = 0) {
 	// Get the name of the texture for this image from our image map
 	let textureName = map.get(textureString);
-	// Get the texture from the image we loaded into resources
-	let textures = resources[resourceString].textures;
 
 	// Create a new sprite from this texture
 	img = addSprite(textures, textureName, x, y, vx, vy);
@@ -204,4 +222,3 @@ function keyLogic(textures) {
 		}
 	};
 }
-
