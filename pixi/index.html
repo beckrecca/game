@@ -49,8 +49,8 @@
 		.add("paths","assets/maps/paths.json")
 		.load(setup);
 
-		// initialize our sprite
-		let floor, handsome, id, tiles, state;
+		// initialize variables that may be used in more than one function
+		let background, backgroundTextures, buildTextures, characterTextures, decorContainer, decorTextures, interactiveTextures, liquidTextures, pathTextures, handsome, scene, state;
 
 		// gameloop
 		function gameLoop(delta) {
@@ -61,6 +61,7 @@
 		// play
 		function play(delta) {
 			containPlayer(handsome);
+			outOfBounds(handsome,decorContainer);
 		}
 
 		//Add the canvas that Pixi automatically created for you to the HTML document

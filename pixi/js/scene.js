@@ -1,43 +1,78 @@
-// Get our mapped out images - turns json file frames into readable names
-/**
-backgroundMap = nameBackgrounds(); // background resource
-buildTextureMap = nameTextures(); // build resource
-spriteMap = nameSprites(); // characters resource
-interactMap = nameInteractiveObjects(); // interactives resource
-// not necessary for environment, paths, liquids
-
-// Initialize image resources
-backgroundTextures = resources["background"].textures;
-buildTextures = resources["build"].textures;
-characterTextures = resources["characters"].textures;
-decorTextures = resources["environment"].textures;
-interactiveTextures = resources["interactives"].textures;
-liquidTextures = resources["liquids"].textures;
-pathTextures = resources["paths"].textures; **/
-
 // Get an array of background textures we want to use
 function quickBackground(type = "green") {
 	let background;
-	if (type = "green") {
+	if (type == "green") {
 		background = [
-							backgroundTextures[backgroundMap.get('grass-full-210')],
-							backgroundTextures[backgroundMap.get('grass-full-211')],
-							backgroundTextures[backgroundMap.get('grass-full-29')],
-							backgroundTextures[backgroundMap.get('grass-full-310')],
-							backgroundTextures[backgroundMap.get('grass-full-311')],
-							backgroundTextures[backgroundMap.get('grass-full-39')],
-							backgroundTextures[backgroundMap.get('green-full-00')],
-							backgroundTextures[backgroundMap.get('green-full-01')],
-							backgroundTextures[backgroundMap.get('green-full-02')],
-							backgroundTextures[backgroundMap.get('green-full-10')],
-							backgroundTextures[backgroundMap.get('green-full-11')],
-							backgroundTextures[backgroundMap.get('green-full-12')],
-							backgroundTextures[backgroundMap.get('green-none')]							];
+			backgroundTextures[backgroundMap.get('grass-full-210')],
+			backgroundTextures[backgroundMap.get('grass-full-211')],
+			backgroundTextures[backgroundMap.get('grass-full-29')],
+			backgroundTextures[backgroundMap.get('grass-full-310')],
+			backgroundTextures[backgroundMap.get('grass-full-311')],
+			backgroundTextures[backgroundMap.get('grass-full-39')],
+			backgroundTextures[backgroundMap.get('green-full-00')],
+			backgroundTextures[backgroundMap.get('green-full-01')],
+			backgroundTextures[backgroundMap.get('green-full-02')],
+			backgroundTextures[backgroundMap.get('green-full-10')],
+			backgroundTextures[backgroundMap.get('green-full-11')],
+			backgroundTextures[backgroundMap.get('green-full-12')],
+			backgroundTextures[backgroundMap.get('green-none')]	
+			];
+	}
+	else if (type == "desert" ) {
+		background = [
+			backgroundTextures[backgroundMap.get('desert-full-03')],
+			backgroundTextures[backgroundMap.get('desert-full-04')],
+			backgroundTextures[backgroundMap.get('desert-full-05')],
+			backgroundTextures[backgroundMap.get('desert-full-13')],
+			backgroundTextures[backgroundMap.get('desert-full-14')],
+			backgroundTextures[backgroundMap.get('desert-full-15')],
+			backgroundTextures[backgroundMap.get('desert-none')],
+			backgroundTextures[backgroundMap.get('desert-full-03')],
+			backgroundTextures[backgroundMap.get('desert-full-04')],
+			backgroundTextures[backgroundMap.get('desert-full-05')],
+			backgroundTextures[backgroundMap.get('desert-full-13')],
+			backgroundTextures[backgroundMap.get('desert-full-14')],
+			backgroundTextures[backgroundMap.get('desert-full-15')],
+			backgroundTextures[backgroundMap.get('desert-none')],
+			liquidTextures['water-sand-rounded.png'],
+			backgroundTextures[backgroundMap.get('desert-full-03')],
+			backgroundTextures[backgroundMap.get('desert-full-04')],
+			backgroundTextures[backgroundMap.get('desert-full-05')],
+			backgroundTextures[backgroundMap.get('desert-full-13')],
+			backgroundTextures[backgroundMap.get('desert-full-14')],
+			backgroundTextures[backgroundMap.get('desert-full-15')],
+			backgroundTextures[backgroundMap.get('desert-none')]
+		];
+	}
+	else if (type == "muddy") {
+		background = [
+			backgroundTextures[backgroundMap.get('grass-full-210')],
+			backgroundTextures[backgroundMap.get('grass-full-211')],
+			backgroundTextures[backgroundMap.get('grass-full-29')],
+			backgroundTextures[backgroundMap.get('grass-full-310')],
+			backgroundTextures[backgroundMap.get('grass-full-311')],
+			backgroundTextures[backgroundMap.get('grass-full-39')],
+			backgroundTextures[backgroundMap.get('grass-muddy-BL')],
+			backgroundTextures[backgroundMap.get('grass-muddy-BR')],
+			backgroundTextures[backgroundMap.get('grass-muddy-none')],
+			backgroundTextures[backgroundMap.get('grass-muddy-TL')],
+			backgroundTextures[backgroundMap.get('grass-muddy-TR')],
+			backgroundTextures[backgroundMap.get('grass-muddy-TRBL')],
+			backgroundTextures[backgroundMap.get('grass-full-39')],
+			backgroundTextures[backgroundMap.get('green-full-00')],
+			backgroundTextures[backgroundMap.get('green-full-01')],
+			backgroundTextures[backgroundMap.get('green-full-02')],
+			backgroundTextures[backgroundMap.get('green-full-10')],
+			backgroundTextures[backgroundMap.get('green-full-11')],
+			backgroundTextures[backgroundMap.get('green-full-12')],
+			backgroundTextures[backgroundMap.get('green-none')]	
+		];
+
 	}
 	return background;
 }
 
-function sceneBackgroundHelper(texturesArray, width, height) {
+function quickBackgroundHelper(texturesArray, width, height) {
 	scene = new Container();
 	x = width / 32;
 	y = height / 32;
@@ -54,6 +89,16 @@ function sceneBackgroundHelper(texturesArray, width, height) {
 	return scene;
 }
 
+function quickSpriteRepeater(texture, n, y = 0, x = 0) {
+	imgContainer = new Container();
+	for (let i = 0; i < n; i++) {
+		img = new Sprite(texture);
+		img.x = i * 32;
+		img.y = y * 32;
+		imgContainer.addChild(img);
+	}
+	return imgContainer;
+}
 /*
 *	TEXTURE MAP KEY
 
@@ -330,4 +375,95 @@ spikes-neutral-gold-square
 spikes-neutral-silver-diamond
 spikes-neutral-silver-square
 
+
+***** LIQUIDS ******* (no map just resources)
+
+lava-37.png
+lava-38.png
+lava-39.png
+lava-40.png
+lava-43.png
+lava-44.png
+lava-45.png
+lava-46.png
+lava-49.png
+lava-50.png
+lava-51.png
+lava-52.png
+lava-corner-BL.png
+lava-corner-BR.png
+lava-corner-TL.png
+lava-corner-TR.png
+lava-left.png
+lava-right.png
+water-grass-B2.png
+water-grass-BL
+water-grass-BL3.png
+water-grass-BR.png
+water-grass-BR2.png
+water-grass-BR3.png
+water-grass-rounded-2.png
+water-grass-rounded-3.png
+water-grass-rounded.png
+water-grass-TL.png
+water-grass-TL2.png
+water-grass-TL3.png
+water-grass-TR.png
+water-grass-TR2.png
+water-grass-TR2.png
+water-grass-TRBL-2
+water-grass-TRBL-3.png
+water-grass-TRBL.png
+water-sand-B2.png
+water-sand-BL
+water-sand-BL3.png
+water-sand-BR.png
+water-sand-BR2.png
+water-sand-BR3.png
+water-sand-rounded-2.png
+water-sand-rounded-3.png
+water-sand-rounded.png
+water-sand-TL.png
+water-sand-TL2.png
+water-sand-TL3.png
+water-sand-TR.png
+water-sand-TR2.png
+water-sand-TR3.png
+water-sand-TRBL-2
+water-sand-TRBL-3.png
+water-sand-TRBL.png
+
+
+ENVIRONMENT
+
+"bed.png",
+"throne.png",
+"statue.png",
+"well.png",
+"stairs-up.png",
+"stairs-down.png",
+"castle.png",
+"sleeping-mat.png",
+"table.png",
+"dresser.png",
+"pillar.png",
+"hill.png",
+"mountain.png",
+"town.png",
+"flowers.png",
+"rocks.png",
+"pine.png",
+"mine-entrance.png",
+"tomb-entrance.png",
+"treasure.png",
+"gear-icon.png",
+"crescent-icon.png",
+"plant.png",
+"sign.png",
+"tree.png",
+"pot.png",
+"firs.png",
+"gold.png",
+"weapon-icon.png",
+"potions-icon.png"
 */

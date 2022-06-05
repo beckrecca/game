@@ -15,35 +15,27 @@ function setup() {
 	liquidTextures = resources["liquids"].textures;
 	pathTextures = resources["paths"].textures;
 
-	// Add a new background in scene.js
-	let background = quickBackground("green");
-	greenScene = sceneBackgroundHelper(background, 448, 448);
-	greenScene.x = 32;
-	greenScene.y = 32;
-	app.stage.addChild(greenScene);
-
-/**
-	// Pick a background texture
-	backgroundTextureName = backgroundMap.get("grass-full-311");
-
-	// Use a tiling sprite for our background
-	background = new tilingSprite(backgroundTextures[backgroundTextureName], 512, 512);
-	background.position.x = 0;
-	background.position.y = 0;
-	background.tilePosition.x = 0;
-	background.tilePosition.y = 0;
-	app.stage.addChild(background);
-
-	// add some flowers? scenery?
-	for (let i = 0; i < 10; i++) {
-		xpos = Math.random() * 512;
-		ypos = Math.random() * 512;
-		pot = addSpriteFromMap(interactMap, interactiveTextures, "pot-left-whole", xpos, ypos);
-	} **/
+	// Create a background for our map world
+	let background = quickBackground();
+	scene = quickBackgroundHelper(background, 448, 448);
+	scene.x = 32;
+	scene.y = 32;
+	app.stage.addChild(scene);
 
 	// Let's add our handsome player to the center
-	handsome = addSpriteFromMap(spriteMap, characterTextures, "handsome-still-forward", 256, 256);
-	
+	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), 7, 7);
+	scene.addChild(handsome);
+
+	// Let's add some details to this world
+	decorContainer = new Container();
+	treeTexture = decorTextures['tree.png'];
+	numTrees = 5;
+	for (let i = 0; i < 3; i ++) {
+		treeContainer = new quickSpriteRepeater(treeTexture, numTrees, i);
+		decorContainer.addChild(treeContainer);
+		numTrees--;
+	}
+	scene.addChild(decorContainer);
 
 	// establish key commands and logic
 	keyLogic(characterTextures);
@@ -57,30 +49,15 @@ function setup() {
 
 function createSprite(textures, textureName, x = 0, y = 0, vx = 0, vy = 0) {
 	img = new Sprite(textures[textureName]);
-	img.x = x;
-	img.y = y;
+	img.x = x * 32;
+	img.y = y * 32;
 	img.vx = vx;
 	img.vy = vy;
 	return img;
 }
 
-function addSpriteFromMap(map, textures, textureString, x = 0, y = 0, vx = 0, vy = 0) {
-	// Get the name of the texture for this image from our image map
-	let textureName = map.get(textureString);
-
-	// Create a new sprite from this texture
-	img = addSprite(textures, textureName, x, y, vx, vy);
-	return img;
-}
-
-function addSprite (textures, textureName, x = 0, y = 0, vx = 0, vy = 0 ) {
-	img = new Sprite(textures[textureName]);
-	img.x = x;
-	img.y = y;
-	img.vx = vx;
-	img.vy = vy;
-	app.stage.addChild(img);
-	return img;
+function quickCoord(n) {
+	return n*32;
 }
 
 /*
