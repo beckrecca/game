@@ -64,22 +64,58 @@ function containPlayer(player) {
 
 	// if player is about to leave the scene, stop him
 	if (playerXpos > xmin && playerXpos < xmax) {
-		player.x += player.vx;
+		player.x += player.vx;/**
+		console.log("playerx: " + playerXpos);
+		console.log("playery: " + playerYpos);
+		console.log("xmin: " + xmin);
+		console.log("xmax: " + xmax);
+		console.log("ymin: " + ymin);
+		console.log("ymax: " + ymax); **/
 	}
 	else if (playerXpos <= xmin && player.vx > 0) {
-		player.x += player.vx;
+		player.x += player.vx;/**
+		console.log("playerx: " + playerXpos);
+		console.log("playery: " + playerYpos);
+		console.log("xmin: " + xmin);
+		console.log("xmax: " + xmax);
+		console.log("ymin: " + ymin);
+		console.log("ymax: " + ymax); **/
 	}
 	else if (playerXpos >= xmax && player.vx <= 0) {
-		player.x += player.vx;
+		player.x += player.vx;/**
+		console.log("playerx: " + playerXpos);
+		console.log("playery: " + playerYpos);
+		console.log("xmin: " + xmin);
+		console.log("xmax: " + xmax);
+		console.log("ymin: " + ymin);
+		console.log("ymax: " + ymax); **/
 	}
 	if (playerYpos > ymin && playerYpos < ymax) {
-		player.y += player.vy;
+		player.y += player.vy;/**
+		console.log("playerx: " + playerXpos);
+		console.log("playery: " + playerYpos);
+		console.log("xmin: " + xmin);
+		console.log("xmax: " + xmax);
+		console.log("ymin: " + ymin);
+		console.log("ymax: " + ymax); **/
 	}
 	else if (playerYpos <= ymin && player.vy > 0) {
-		player.y += player.vy;
+		player.y += player.vy;/**
+		console.log("playerx: " + playerXpos);
+		console.log("playery: " + playerYpos);
+		console.log("xmin: " + xmin);
+		console.log("xmax: " + xmax);
+		console.log("ymin: " + ymin);
+		console.log("ymax: " + ymax); **/
 	}
 	else if (playerYpos >= ymax && player.vy <= 0) {
-		player.y += player.vy;
+		player.y += player.vy; /**
+		console.log("playerx: " + playerXpos);
+		console.log("playery: " + playerYpos);
+		console.log("xmin: " + xmin);
+		console.log("xmax: " + xmax);
+		console.log("ymin: " + ymin);
+		console.log("ymax: " + ymax); **/
 	}
 }
 
@@ -134,11 +170,13 @@ function hitTestRectangle(r1, r2) {
 	return hit;
 };
 
-function outOfBounds(player, container) {
-	let collision = undefined;
+function worldMapNavigator(player, container, name) {
+	let place = undefined;
 
 	if (hitTestRectangle(player,container)) {
+		console.log("collision happening");
 		// check which direction they're moving in
+		place = name;
 		if (player.vx < 0) {
 			player.x = container.x + container.width;
 			collision = "right";
@@ -156,7 +194,7 @@ function outOfBounds(player, container) {
 			collision = "top";
 		}
 	}
-	return collision;
+	return place;
 }
 
 /***

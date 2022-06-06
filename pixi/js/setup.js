@@ -15,8 +15,25 @@ function setup() {
 	liquidTextures = resources["liquids"].textures;
 	pathTextures = resources["paths"].textures;
 
+	// Create other region Scenes
+	northWestRegionScene = northWestScene();
+	northEastRegionScene = northEastScene();
+	centralRegionScene = centralScene();
+	southWestRegionScene = southWestScene();
+
 	// Create a background for our map world
 	worldScene = worldMapScene();
+
+	// Add text at bottom
+	const style = new TextStyle ({
+		fontFamily: "Arial",
+		fill: "white"
+	});
+
+	message = new Text("World Map", style);
+	message.x = (app.stage.width/2) - (message.width/2) + 32;
+	message.y = 480;
+	app.stage.addChild(message);
 
 	// establish key commands and logic
 	keyLogic(characterTextures);
@@ -26,6 +43,11 @@ function setup() {
 
 	// Start the game loop
 	app.ticker.add((delta) => gameLoop(delta));
+}
+
+function updateText(text) {
+	message.text = text;
+	message.x = (app.stage.width/2) - (message.width/2) + 32;
 }
 
 function createSprite(textures, textureName, x = 0, y = 0, vx = 0, vy = 0) {

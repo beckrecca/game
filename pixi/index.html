@@ -24,6 +24,8 @@
 		loader = PIXI.Loader.shared,
 		resources = PIXI.Loader.shared.resources,
 		Sprite = PIXI.Sprite,
+		Text = PIXI.Text,
+		TextStyle = PIXI.TextStyle,
 		tileMap = PIXI.Tilemap,
 		tilingSprite = PIXI.TilingSprite,
 		utils = PIXI.utils;
@@ -50,7 +52,7 @@
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
-		let background, backgroundTextures, buildTextures, characterTextures, decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, pathTextures, outOfBoundsArray = [], state, worldScene;
+		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, message, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, state, worldScene;
 
 		// gameloop
 		function gameLoop(delta) {
@@ -60,13 +62,99 @@
 
 		// worldMap scene
 		function worldMap(delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
+			centralRegionScene.visible = false;
+			southWestRegionScene.visible = false;
+			if (worldScene.visible == false) {
+				worldScene.visible = true;
+			}
+			worldScene.addChild(handsome);
 			// contain player within the scene
 			containPlayer(handsome);
-			// don't let player stomp on out of bounds containers
-			for (let i = 0; i < outOfBoundsArray.length; i++) {
-				contained = outOfBoundsArray[i];
-				outOfBounds(handsome,contained);
+			// player interacts with different world containers
+			for (let i = 0; i < regionsArray.length; i++) {
+				contained = regionsArray[i][0];
+				name = regionsArray[i][1];
+				let place = worldMapNavigator(handsome, contained, name);
+				if (place != undefined) {
+					playerXpos = handsome.x;
+					playerYpos = handsome.y;
+					updateText("Go to " + place + "? (Enter/ESC)");
+					keyboard("Enter").press = () => {
+						if (place == "North East") {
+							state = northEast;
+						}
+						else if (place == "North West") {
+							state = northWest;
+						}
+						else if (place == "Central") {
+							state = central;
+						}
+						else if (place == "South West") {
+							state = southWest;
+						}
+					};
+					keyboard("Escape").press = () => {
+						handsome.x = playerXpos;
+						handsome.y = playerYpos;
+						updateText("World Map");
+					};
+				}
 			}
+		}
+
+		function northEast(delta) {
+			worldScene.visible = false;
+			updateText("");
+			northEastRegionScene.visible = true;
+			northEastRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			keyboard("Escape").press = () => {
+				handsome.x = 8 * 32;
+				handsome.y = 3 * 32;
+				state = worldMap;
+			};
+		}
+
+		function northWest(delta) {
+			worldScene.visible = false;
+			updateText("");
+			northWestRegionScene.visible = true;
+			northWestRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			keyboard("Escape").press = () => {
+				handsome.x = 5 * 32;
+				handsome.y = 3 * 32;
+				state = worldMap;
+			};
+		}
+
+		function central(delta) {
+			worldScene.visible = false;
+			updateText("");
+			centralRegionScene.visible = true;
+			centralRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			keyboard("Escape").press = () => {
+				handsome.x = 9 * 32;
+				handsome.y = 11 * 32;
+				state = worldMap;
+			};
+		}
+
+		function southWest (delta) {
+			worldScene.visible = false;
+			updateText("");
+			southWestRegionScene.visible = true;
+			southWestRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			keyboard("Escape").press = () => {
+				handsome.x = 3 * 32;
+				handsome.y = 9 * 32;
+				state = worldMap;
+			};
 		}
 
 		//Add the canvas that Pixi automatically created for you to the HTML document
