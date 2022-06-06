@@ -1,4 +1,6 @@
-// Get an array of background textures we want to use
+/*
+*	SCENE HELPER FUNCTIONS
+*/
 function quickBackground(type = "green") {
 	let background;
 	if (type == "green") {
@@ -93,12 +95,121 @@ function quickSpriteRepeater(texture, n, y = 0, x = 0) {
 	imgContainer = new Container();
 	for (let i = 0; i < n; i++) {
 		img = new Sprite(texture);
-		img.x = i * 32;
+		img.x = (i + x) * 32;
 		img.y = y * 32;
 		imgContainer.addChild(img);
 	}
 	return imgContainer;
 }
+
+function quickSpriteRepeaterVertical(texture, n, x = 0, y = 0) {
+	imgContainer = new Container();
+	for (let i = 0; i < n; i++) {
+		img = new Sprite(texture);
+		img.x = x * 32;
+		img.y = (i + y) * 32;
+		imgContainer.addChild(img);
+	}
+	return imgContainer;
+}
+
+function quickSpriteAdd(textures, textureName, container, x = 0, y = 0, vx = 0, vy = 0) {
+	img = createSprite(textures, textureName, x, y, vx, vy);
+	container.addChild(img);
+}
+
+/*
+*	CUSTOM GAME SCENES
+*/
+
+function worldMapScene() {
+	let worldBackground = quickBackground();
+	scene = quickBackgroundHelper(worldBackground, 448, 448);
+	scene.x = 32;
+	scene.y = 32;
+	app.stage.addChild(scene);
+	// Let's add our handsome player to the center
+	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), 7, 7);
+	scene.addChild(handsome);
+
+	// Adding Warbling Forest
+	northWestContainer = new Container();
+	treeTexture = decorTextures['tree.png'];
+	numTrees = (Math.floor(scene.width/3)/32);
+	for (let i = 0; i < 3; i ++) {
+		treeContainer = new quickSpriteRepeater(treeTexture, numTrees, i);
+		northWestContainer.addChild(treeContainer);
+		numTrees--;
+	}
+
+	// Adding Warbling Forest details
+	quickSpriteAdd(decorTextures, "town.png", northWestContainer, 4, 2);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("fairy-lights-TRBL"), northWestContainer, 3, 2);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("fairy-lights-TRBL"), northWestContainer, 4, 1);
+
+	// Adding mountain range
+	centralContainer = new Container();
+	centralContainer.x = 5 * 32;
+	centralContainer.y = 9 * 32;
+	mountainTexture = decorTextures['mountain.png'];
+	mountainRangeWest = new quickSpriteRepeaterVertical(mountainTexture, 5);
+	centralContainer.addChild(mountainRangeWest);
+	mountainRangeCentral = new quickSpriteRepeaterVertical(mountainTexture, 3, 1, 2);
+	centralContainer.addChild(mountainRangeCentral);
+	// Add mountain details
+	quickSpriteAdd(decorTextures, 'firs.png', centralContainer, 1, 1);
+	mountainWoods = new quickSpriteRepeaterVertical(decorTextures["firs.png"], 3, 2);
+	centralContainer.addChild(mountainWoods);
+	quickSpriteAdd(decorTextures, 'hill.png', centralContainer, 1);
+
+	// Add some water
+	northEastContainer = new Container();
+	northEastContainer.x = 9 * 32;
+	quickSpriteAdd(decorTextures, "rocks.png", northEastContainer);
+	quickSpriteAdd(liquidTextures, "water-grass-TL2.png", northEastContainer, 1, 0);
+	quickSpriteAdd(liquidTextures, "water-top.png", northEastContainer, 2, 0);
+	quickSpriteAdd(liquidTextures, "water-top.png", northEastContainer, 3, 0);
+	fullSeaTexture = liquidTextures["water-full.png"];
+	fullSeaContainer = new quickSpriteRepeaterVertical(fullSeaTexture, 2, 4);
+	northEastContainer.addChild(fullSeaContainer);
+	quickSpriteAdd(liquidTextures, "water-grass-TL2.png", northEastContainer, 0, 1);
+	quickSpriteAdd(liquidTextures, "water-grass-rounded.png", northEastContainer, 1, 1);
+	quickSpriteAdd(liquidTextures, "water-full.png", northEastContainer, 2, 1);
+	quickSpriteAdd(liquidTextures, "water-bottom.png", northEastContainer, 3, 1);
+	quickSpriteAdd(liquidTextures, "water-left.png", northEastContainer, 0, 2);
+	quickSpriteAdd(liquidTextures, "water-full.png", northEastContainer, 1, 2);
+	quickSpriteAdd(liquidTextures, "water-grass-BR.png", northEastContainer, 2, 2);
+	quickSpriteAdd(decorTextures, "flowers.png", northEastContainer, 3, 2);
+	quickSpriteAdd(liquidTextures, "water-left.png", northEastContainer, 4, 2);
+	quickSpriteAdd(liquidTextures, "water-grass-BL.png", northEastContainer, 0, 3);
+	quickSpriteAdd(liquidTextures, "water-right.png", northEastContainer, 1, 3);
+	quickSpriteAdd(decorTextures, "mountain.png", northEastContainer, 2, 3);
+	quickSpriteAdd(decorTextures, "castle.png", northEastContainer, 3, 3);
+	quickSpriteAdd(liquidTextures, "water-grass-BL.png", northEastContainer, 4, 3);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-TRBL"), northEastContainer, 0, 4);
+	quickSpriteAdd(decorTextures, "town.png", northEastContainer, 0, 4);
+	quickSpriteAdd(liquidTextures, "water-left.png", northEastContainer, 1, 4);
+	quickSpriteAdd(liquidTextures, "water-grass-rounded-3.png", northEastContainer, 2, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("stone-sandy-TRBL"), northEastContainer, 3, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-BR"), northEastContainer, 4, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-TR"), northEastContainer, 0, 5);
+	quickSpriteAdd(decorTextures, "rocks.png", northEastContainer, 0, 5);
+	quickSpriteAdd(liquidTextures, "water-grass-BL.png", northEastContainer, 1, 5);
+	southShore = new quickSpriteRepeater(liquidTextures["water-bottom.png"], 3, 5, 2);
+	northEastContainer.addChild(southShore);
+
+	// set the geographically interesting containers as out of bounds for player
+	outOfBoundsArray.push(northWestContainer);
+	outOfBoundsArray.push(centralContainer);
+	outOfBoundsArray.push(northEastContainer);
+
+	scene.addChild(northWestContainer);
+	scene.addChild(centralContainer);
+	scene.addChild(northEastContainer);
+
+	return scene;
+}
+
 /*
 *	TEXTURE MAP KEY
 

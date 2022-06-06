@@ -137,11 +137,6 @@ function hitTestRectangle(r1, r2) {
 function outOfBounds(player, container) {
 	let collision = undefined;
 
-	const North = [[container.x, container.y], [container.x + container.width, container.y]];
-	const South = [[container.x, container.y + container.height], [container.x + container.width, container.y + container.height]];
-	const East = [[container.x + container.width, container.y], [container.x + container.width, container.y + container.height]];
-	const West = [[container.x, container.y], [container.x, container.y + container.height]];
-
 	if (hitTestRectangle(player,container)) {
 		// check which direction they're moving in
 		if (player.vx < 0) {

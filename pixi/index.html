@@ -50,7 +50,7 @@
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
-		let background, backgroundTextures, buildTextures, characterTextures, decorContainer, decorTextures, interactiveTextures, liquidTextures, pathTextures, handsome, scene, state;
+		let background, backgroundTextures, buildTextures, characterTextures, decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, pathTextures, outOfBoundsArray = [], state, worldScene;
 
 		// gameloop
 		function gameLoop(delta) {
@@ -58,10 +58,15 @@
 			state(delta);
 		}
 
-		// play
-		function play(delta) {
+		// worldMap scene
+		function worldMap(delta) {
+			// contain player within the scene
 			containPlayer(handsome);
-			outOfBounds(handsome,decorContainer);
+			// don't let player stomp on out of bounds containers
+			for (let i = 0; i < outOfBoundsArray.length; i++) {
+				contained = outOfBoundsArray[i];
+				outOfBounds(handsome,contained);
+			}
 		}
 
 		//Add the canvas that Pixi automatically created for you to the HTML document

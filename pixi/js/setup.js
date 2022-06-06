@@ -16,32 +16,13 @@ function setup() {
 	pathTextures = resources["paths"].textures;
 
 	// Create a background for our map world
-	let background = quickBackground();
-	scene = quickBackgroundHelper(background, 448, 448);
-	scene.x = 32;
-	scene.y = 32;
-	app.stage.addChild(scene);
-
-	// Let's add our handsome player to the center
-	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), 7, 7);
-	scene.addChild(handsome);
-
-	// Let's add some details to this world
-	decorContainer = new Container();
-	treeTexture = decorTextures['tree.png'];
-	numTrees = 5;
-	for (let i = 0; i < 3; i ++) {
-		treeContainer = new quickSpriteRepeater(treeTexture, numTrees, i);
-		decorContainer.addChild(treeContainer);
-		numTrees--;
-	}
-	scene.addChild(decorContainer);
+	worldScene = worldMapScene();
 
 	// establish key commands and logic
 	keyLogic(characterTextures);
 	
 	// Set the game state
-	state = play;
+	state = worldMap;
 
 	// Start the game loop
 	app.ticker.add((delta) => gameLoop(delta));
@@ -54,10 +35,6 @@ function createSprite(textures, textureName, x = 0, y = 0, vx = 0, vy = 0) {
 	img.vx = vx;
 	img.vy = vy;
 	return img;
-}
-
-function quickCoord(n) {
-	return n*32;
 }
 
 /*

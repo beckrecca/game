@@ -1079,6 +1079,106 @@
             "w":32,
             "h":32
          }
+      },
+      "water-full.png":{
+         "frame":{
+            "x":16,
+            "y":48,
+            "w":32,
+            "h":32
+         },
+         "rotated":false,
+         "trimmed":false,
+         "spriteSourceSize":{
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
+         },
+         "sourceSize":{
+            "w":32,
+            "h":32
+         }
+      },
+      "water-top.png":{
+         "frame":{
+            "x":8,
+            "y":32,
+            "w":32,
+            "h":32
+         },
+         "rotated":false,
+         "trimmed":false,
+         "spriteSourceSize":{
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
+         },
+         "sourceSize":{
+            "w":32,
+            "h":32
+         }
+      },
+      "water-left.png":{
+         "frame":{
+            "x":0,
+            "y":56,
+            "w":32,
+            "h":32
+         },
+         "rotated":false,
+         "trimmed":false,
+         "spriteSourceSize":{
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
+         },
+         "sourceSize":{
+            "w":32,
+            "h":32
+         }
+      },
+      "water-right.png":{
+         "frame":{
+            "x":32,
+            "y":40,
+            "w":32,
+            "h":32
+         },
+         "rotated":false,
+         "trimmed":false,
+         "spriteSourceSize":{
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
+         },
+         "sourceSize":{
+            "w":32,
+            "h":32
+         }
+      },
+      "water-bottom.png":{
+         "frame":{
+            "x":80,
+            "y":64,
+            "w":32,
+            "h":32
+         },
+         "rotated":false,
+         "trimmed":false,
+         "spriteSourceSize":{
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
+         },
+         "sourceSize":{
+            "w":32,
+            "h":32
+         }
       }
    },
    "animations":{
@@ -1136,7 +1236,12 @@
          "lava-50.png",
          "lava-51.png",
          "lava-52.png",
-         "lava-corner-BR.png"
+         "lava-corner-BR.png",
+         "water-full.png",
+         "water-top.png",
+         "water-left.png",
+         "water-right",
+         "water-bottom"
       ]
    },
    "meta":{
