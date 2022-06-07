@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+	<script src="js/pixi.min.js"></script>
+	<script src="js/setup-sandbox.js"></script>
+	<script src="js/spritemap.js"></script>
+	<script src="js/texturemap.js"></script>
+	<script src="js/controls.js"></script>
+	<script src="js/setup.js"></script>
+</head>
+<body>
+	<script>
+		//Aliases
+		const Application = PIXI.Application,
+		base = PIXI.BaseTexture,
+		loader = PIXI.Loader.shared,
+		resources = PIXI.Loader.shared.resources,
+		Sprite = PIXI.Sprite,
+		tileMap = PIXI.Tilemap,
+		tilingSprite = PIXI.TilingSprite,
+		utils = PIXI.utils;
+
+		//Create a Pixi Application
+		const app = new Application({ 
+			width: 512, 
+			height: 544,                       
+			antialias: true, 
+			transparent: false, 
+			resolution: 1
+			}
+		);
+
+		// we're working on our scene builder here
+		const scene = "scenebuilder";
+
+		// load our assets
+		loader
+		.add("characters","assets/maps/characters.json")
+		.add("tiles","assets/maps/tiles.json")
+		.load(setup);
+
+		// initialize our vars
+		let handsome, ground, state;
+
+		// gameloop
+		function gameLoop(delta) {
+			// update the current state
+			state(delta);
+		}
+
+		// play
+		function play(delta) {
+			//
+		}
+
+		//Add the canvas that Pixi automatically created for you to the HTML document
+		document.body.appendChild(app.view);
+		</script>
+	</body>
+	</html>

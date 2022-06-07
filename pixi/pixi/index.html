@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+<head>
+	<script src="js/pixi.min.js"></script>
+	<script src="js/backgroundmap.js"></script>
+	<script src="js/interactmap.js"></script>
+	<script src="js/spritemap.js"></script>
+	<script src="js/texturemap.js"></script>
+	<script src="js/controls.js"></script>
+	<script src="js/scene.js"></script>
+	<script src="js/setup.js"></script>
+	<style>
+		body {
+			text-align:center;
+			background-color: #000;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		//Aliases
+		const Application = PIXI.Application,
+		base = PIXI.BaseTexture,
+		Container = PIXI.Container,
+		loader = PIXI.Loader.shared,
+		resources = PIXI.Loader.shared.resources,
+		Sprite = PIXI.Sprite,
+		Text = PIXI.Text,
+		TextStyle = PIXI.TextStyle,
+		tileMap = PIXI.Tilemap,
+		tilingSprite = PIXI.TilingSprite,
+		utils = PIXI.utils;
+
+		//Create a Pixi Application
+		const app = new Application({ 
+			width: 512, 
+			height: 512,                       
+			antialias: true, 
+			transparent: false, 
+			resolution: 1
+			}
+		);
+
+		// load our assets
+		loader
+		.add("background","assets/maps/background.json")
+		.add("build","assets/maps/tiles.json")
+		.add("characters","assets/maps/characters.json")
+		.add("environment","assets/maps/environment.json")
+		.add("interactives","assets/maps/interactives.json")
+		.add("liquids", "assets/maps/liquids.json")
+		.add("paths","assets/maps/paths.json")
+		.load(setup);
+
+		// initialize variables that may be used in more than one function
+		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, state, untreadablesArray = [], worldScene;
+
+		// gameloop
+		function gameLoop(delta) {
+			// update the current state
+			state(delta);
+		}
+
+		// worldMap scene
+		function worldMap(delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
+			centralRegionScene.visible = false;
+			southWestRegionScene.visible = false;
+			if (worldScene.visible == false) {
+				worldScene.visible = true;
+			}
+			worldScene.addChild(handsome);
+			// contain player within the scene
+			containPlayer(handsome);
+			// player interacts with different world containers
+			regionsArray.forEach (function(reg) {
+				contained = reg[0];
+				name = reg[1];
+				let place = worldMapNavigator(handsome, contained, name);
+				// if the navigator names a place the player has walked into
+				if (place != undefined) {
+					// remember his position
+					playerXpos = handsome.x;
+					playerYpos = handsome.y;
+					// ask player if they want to navigate there
+					updateText("Go to " + place + "? (Enter/ESC)");
+					// if the player answers yes (Enter)
+					keyboard("Enter").press = () => {
+						// navigate to the applicable place
+						if (place == "North East") {
+							state = northEast;
+						}
+						else if (place == "North West") {
+							state = northWest;
+						}
+						else if (place == "Central") {
+							state = central;
+						}
+						else if (place == "South West") {
+							setPosition(handsome, 12, 0);
+							state = southWest;
+						}
+					};
+					// if the player answers no (Escape)
+					keyboard("Escape").press = () => {
+						// forget the place's name and resume as normal
+						place = undefined;
+						handsome.x = playerXpos;
+						handsome.y = playerYpos;
+						updateText("World Map");
+					};
+				}
+			});
+		}
+
+		function northEast(delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			centralRegionScene.visible = false;
+			worldScene.visible = false;
+			southWestRegionScene.visible = false;
+			if (northEastRegionScene.visible == false) {
+				northEastRegionScene.visible = true;;
+			}
+			// set up NE
+			updateText("");
+			northEastRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			// ESC to world map
+			keyboard("Escape").press = () => {
+				setPosition(handsome, 8, 3);
+				state = worldMap;
+			};
+			// protect untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a C untreadable
+				if (u[2] == "NW") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
+		}
+
+		function northWest(delta) {
+			// exit any other scene
+			southWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
+			worldScene.visible = false;
+			centralRegionScene.visible = false;
+			if (northWestRegionScene.visible == false) {
+				northWestRegionScene.visible = true;
+			}
+			// set up NW
+			updateText("");
+			northWestRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			// ESC to world map
+			keyboard("Escape").press = () => {
+				setPosition(handsome, 5, 3);
+				state = worldMap;
+			};
+			// protect untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a SW untreadable
+				if (u[2] == "NW") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
+		}
+
+		function central(delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
+			worldScene.visible = false;
+			southWestRegionScene.visible = false;
+			if (centralRegionScene.visible == false) {
+				centralRegionScene.visible = true;
+			}
+			// turn on central scene
+			updateText("");
+			centralRegionScene.addChild(handsome);
+			containPlayer(handsome);
+			// ESC to world map
+			keyboard("Escape").press = () => {
+				setPosition(handsome, 9, 11);
+				state = worldMap;
+			};
+			// protect untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a C untreadable
+				if (u[2] == "C") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
+		}
+
+		function southWest (delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
+			worldScene.visible = false;
+			centralRegionScene.visible = false;
+			if (southWestRegionScene.visible == false) {
+				southWestRegionScene.visible = true;
+			}
+			// turn on SW scene
+			updateText("");
+			// add player
+			southWestRegionScene.addChild(handsome);
+			// player interacts with containers
+			containPlayer(handsome);
+			// ESC to world map
+			keyboard("Escape").press = () => {
+				setPosition(handsome, 3, 9);
+				state = worldMap;
+			};
+			// stop player from tramping on untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a SW untreadable
+				if (u[2] == "SW") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
+			// listen to the player interacting with treadable colliders
+			collidersArray.forEach(function(c) {
+				container = c[0];
+				name = c[1];
+				let happening = collisionDetector(handsome, container, name);
+			});
+		}
+
+		//Add the canvas that Pixi automatically created for you to the HTML document
+		document.body.appendChild(app.view);
+		</script>
+	</body>
+	</html>
