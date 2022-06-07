@@ -12,6 +12,7 @@
 	<style>
 		body {
 			text-align:center;
+			background-color: #000;
 		}
 	</style>
 </head>
@@ -52,7 +53,7 @@
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
-		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, message, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, state, worldScene;
+		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, state, untreadablesArray = [], worldScene;
 
 		// gameloop
 		function gameLoop(delta) {
@@ -74,15 +75,20 @@
 			// contain player within the scene
 			containPlayer(handsome);
 			// player interacts with different world containers
-			for (let i = 0; i < regionsArray.length; i++) {
-				contained = regionsArray[i][0];
-				name = regionsArray[i][1];
+			regionsArray.forEach (function(reg) {
+				contained = reg[0];
+				name = reg[1];
 				let place = worldMapNavigator(handsome, contained, name);
+				// if the navigator names a place the player has walked into
 				if (place != undefined) {
+					// remember his position
 					playerXpos = handsome.x;
 					playerYpos = handsome.y;
+					// ask player if they want to navigate there
 					updateText("Go to " + place + "? (Enter/ESC)");
+					// if the player answers yes (Enter)
 					keyboard("Enter").press = () => {
+						// navigate to the applicable place
 						if (place == "North East") {
 							state = northEast;
 						}
@@ -93,16 +99,20 @@
 							state = central;
 						}
 						else if (place == "South West") {
+							setPosition(handsome, 12, 0);
 							state = southWest;
 						}
 					};
+					// if the player answers no (Escape)
 					keyboard("Escape").press = () => {
+						// forget the place's name and resume as normal
+						place = undefined;
 						handsome.x = playerXpos;
 						handsome.y = playerYpos;
 						updateText("World Map");
 					};
 				}
-			}
+			});
 		}
 
 		function northEast(delta) {
@@ -112,8 +122,7 @@
 			northEastRegionScene.addChild(handsome);
 			containPlayer(handsome);
 			keyboard("Escape").press = () => {
-				handsome.x = 8 * 32;
-				handsome.y = 3 * 32;
+				setPosition(handsome, 8, 3);
 				state = worldMap;
 			};
 		}
@@ -125,8 +134,7 @@
 			northWestRegionScene.addChild(handsome);
 			containPlayer(handsome);
 			keyboard("Escape").press = () => {
-				handsome.x = 5 * 32;
-				handsome.y = 3 * 32;
+				setPosition(handsome, 5, 3);
 				state = worldMap;
 			};
 		}
@@ -138,23 +146,38 @@
 			centralRegionScene.addChild(handsome);
 			containPlayer(handsome);
 			keyboard("Escape").press = () => {
-				handsome.x = 9 * 32;
-				handsome.y = 11 * 32;
+				setPosition(handsome, 9, 11);
 				state = worldMap;
 			};
 		}
 
 		function southWest (delta) {
+			// turn off world map
 			worldScene.visible = false;
+			// turn on SW scene
 			updateText("");
 			southWestRegionScene.visible = true;
+			// add player
 			southWestRegionScene.addChild(handsome);
+			// player interacts with containers
 			containPlayer(handsome);
+			// ESC to world map
 			keyboard("Escape").press = () => {
-				handsome.x = 3 * 32;
-				handsome.y = 9 * 32;
+				setPosition(handsome, 3, 9);
 				state = worldMap;
 			};
+			// stop player from tramping on untreadables
+			untreadablesArray.forEach(function(u) {
+				contained = u[0];
+				name = u[1];
+				let place = worldMapNavigator(handsome, contained, name);
+			});
+			// listen to the player interacting with treadable colliders
+			collidersArray.forEach(function(c) {
+				container = c[0];
+				name = c[1];
+				let happening = collisionDetector(handsome, container, name);
+			});
 		}
 
 		//Add the canvas that Pixi automatically created for you to the HTML document

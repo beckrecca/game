@@ -26,7 +26,8 @@ function setup() {
 
 	// Add text at bottom
 	const style = new TextStyle ({
-		fontFamily: "Arial",
+		fontFamily: "Helvetica",
+		fontSize: 20,
 		fill: "white"
 	});
 
@@ -39,7 +40,7 @@ function setup() {
 	keyLogic(characterTextures);
 	
 	// Set the game state
-	state = worldMap;
+	state = southWest;
 
 	// Start the game loop
 	app.ticker.add((delta) => gameLoop(delta));
@@ -57,6 +58,11 @@ function createSprite(textures, textureName, x = 0, y = 0, vx = 0, vy = 0) {
 	img.vx = vx;
 	img.vy = vy;
 	return img;
+}
+
+function setPosition(img, x, y) {
+	img.x = x * 32;
+	img.y = y * 32;
 }
 
 /*
@@ -131,7 +137,7 @@ function keyLogic(textures) {
 		    	else {
 		    		handsome.texture = movingTextures[moveUp];
 		    	}
-			}, 250);
+			}, 150);
 			clearInterval(rightInterval);
 	    	clearInterval(downInterval);
 	    	clearInterval(leftInterval);
@@ -158,7 +164,7 @@ function keyLogic(textures) {
 		    	else {
 		    		handsome.texture = movingTextures[moveRight];
 		    	}
-			}, 250);
+			}, 150);
 			clearInterval(leftInterval);
 	    	clearInterval(downInterval);
 	    	clearInterval(upInterval);
@@ -185,7 +191,7 @@ function keyLogic(textures) {
 	    	else {
 	    		handsome.texture = movingTextures[moveDown];
 	    	}
-		}, 250);
+		}, 150);
 		clearInterval(rightInterval);
 	    clearInterval(leftInterval);
 	    clearInterval(upInterval);

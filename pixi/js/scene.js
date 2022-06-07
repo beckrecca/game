@@ -130,6 +130,29 @@ function regionMouseover(container, name) {
 	});
 }
 
+function animateFlame(animatedFlame, color = "red") {
+	let n = 0;
+	flameInterval = setInterval(function() {
+    	n = Math.floor(Math.random() * 3);
+    	if (n == 1) {
+    		animatedFlame.texture = interactiveTextures[interactMap.get("flame-left-" + color)];
+    	}
+    	else if (n == 2) {
+    		animatedFlame.texture = interactiveTextures[interactMap.get("flame-right-" + color)];
+    	}
+    	else if (n == 3) {
+    		animatedFlame.texture = interactiveTextures[interactMap.get("flame-middle-" + color)];
+    	}
+    	else {
+    		if (color != "yellow") {
+    			animatedFlame.texture = interactiveTextures[interactMap.get("flame-middle-yellow")];
+    		}
+    		else {
+    			animatedFlame.texture = interactiveTextures[interactMap.get("flame-middle-blue")];
+    		}
+    	}
+    }, 150);
+}
 /*
 *	CUSTOM GAME SCENES
 */
@@ -170,7 +193,7 @@ function worldMapScene() {
 	// Adding mountain range
 	centralContainer = new Container();
 	centralContainer.x = 6 * 32;
-	centralContainer.y = 7 * 32;
+	centralContainer.y = 8 * 32;
 	mountainTexture = decorTextures['mountain.png'];
 	mountainRangeWest = new quickSpriteRepeaterVertical(mountainTexture, 5);
 	centralContainer.addChild(mountainRangeWest);
@@ -256,7 +279,7 @@ function worldMapScene() {
 		southWestContainer.addChild(desertContainer);
 	}
 	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TL"), southWestContainer);
-	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TR"), southWestContainer, 1, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), southWestContainer, 1, 0);
 	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-TL"), southWestContainer, 2, 0);
 	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-TR"), southWestContainer, 3, 0);
 	quickSpriteAdd(liquidTextures, "water-sand-TRBL-3.png", southWestContainer, 3, 1);
@@ -279,6 +302,7 @@ function worldMapScene() {
 	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), 0, (scene.height/2)/32);
 	regionMouseover(handsome, "Handsome");
 
+	// Add each region to the scene
 	scene.addChild(northWestContainer);
 	scene.addChild(centralContainer);
 	scene.addChild(northEastContainer);
@@ -323,6 +347,150 @@ function southWestScene() {
 	scene.x = 32;
 	scene.y = 32;
 	app.stage.addChild(scene);
+
+	// create an oasis
+	oasisContainer = new Container();
+	setPosition(oasisContainer, 10, 1.5);
+	quickSpriteAdd(liquidTextures, "water-sand-TL.png", oasisContainer);
+	waterTopContainer = quickSpriteRepeater(liquidTextures['water-sand-top.png'], 2, 0, 1);
+	oasisContainer.addChild(waterTopContainer);
+	quickSpriteAdd(liquidTextures, "water-sand-TR.png", oasisContainer, 3, 0);
+	waterRightContainer = quickSpriteRepeaterVertical(liquidTextures["water-sand-right.png"], 2, 3, 1);
+	oasisContainer.addChild(waterRightContainer);
+	for (let w = 0; w < 2; w++) {
+		fullWater = quickSpriteRepeater(liquidTextures["water-full.png"], 2, w+1, 1);
+		oasisContainer.addChild(fullWater);
+	}
+	waterLeftContainer = quickSpriteRepeaterVertical(liquidTextures["water-sand-left.png"], 2, 0, 1);
+	oasisContainer.addChild(waterLeftContainer);
+	quickSpriteAdd(liquidTextures, "water-sand-BL.png", oasisContainer, 0, 3);
+	waterBottomContainer = quickSpriteRepeater(liquidTextures['water-sand-bottom.png'], 2, 3, 1);
+	oasisContainer.addChild(waterBottomContainer);
+
+	quickSpriteAdd(liquidTextures, "water-sand-BR.png", oasisContainer, 3, 3);
+	scene.addChild(oasisContainer);
+
+	// add oasis details
+	palmContainer = quickSpriteRepeater(decorTextures["plant.png"], 4, 5, 10);
+	scene.addChild(palmContainer);
+
+	// add sandy hill
+	sandHill = new Container();
+	setPosition(sandHill, 0, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TL"), sandHill);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TR"), sandHill, 1);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TL"), sandHill, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TL"), sandHill, 3);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-cave-BR"), sandHill, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-cave-BL"), sandHill, 5);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TL"), sandHill, 6);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TR"), sandHill, 7);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-BR"), sandHill, 7, 1);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), sandHill, 3, 1);
+	scene.addChild(sandHill);
+
+	// walkable bit
+	sandHillWalkable = new Container();
+	setPosition(sandHillWalkable, 0, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-BL"), sandHillWalkable, 0, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-BL"), sandHillWalkable, 2, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-BR"), sandHillWalkable, 3, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TR"), sandHillWalkable, 7, 2);
+	scene.addChild(sandHillWalkable);
+
+	// a special mine door
+	mineDoorContainer = new Container();
+	setPosition(mineDoorContainer, 5, 2);
+	quickSpriteAdd(decorTextures, "mine-entrance.png", mineDoorContainer);
+	scene.addChild(mineDoorContainer);
+
+	// a special sand hill door
+	sandHillDoorContainer = new Container();
+	setPosition(sandHillDoorContainer, 1, 2);
+	quickSpriteAdd(interactiveTextures, interactMap.get("door-left-whole"), sandHillDoorContainer);
+	scene.addChild(sandHillDoorContainer);
+
+	// sandy hill details
+	quickSpriteAdd(decorTextures, "plant.png", scene, 0, 2.5);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-TL"), scene, 8);
+	quickSpriteAdd(decorTextures, "plant.png", scene, 8.25);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-TRBL"), scene, 8, 1.25);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-TRBL"), scene, 8, 2.5);
+	stoneyPathV = quickSpriteRepeaterVertical(backgroundTextures[backgroundMap.get("stone-sandy-TRBL")], 4, 10, 7);
+	scene.addChild(stoneyPathV);
+	stoneyPathH = quickSpriteRepeater(backgroundTextures[backgroundMap.get("stone-sandy-TRBL")], 10, 7);
+	scene.addChild(stoneyPathH);
+	quickSpriteAdd(interactiveTextures, interactMap.get("pot-middle-through"), scene, 5, 5);
+	quickSpriteAdd(interactiveTextures, interactMap.get("pot-middle-three-quart"), scene, 6, 5);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-TRBL"), scene, 1, 3);
+	greenPathContainer = quickSpriteRepeater(backgroundTextures[backgroundMap.get("grass-sandy-TRBL")], 8, 4, 1);
+	scene.addChild(greenPathContainer);
+
+	// a friggen volcano
+	volcanoContainer = new Container();
+	setPosition(volcanoContainer, 0, 9);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TL"), volcanoContainer, 3, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), volcanoContainer, 4, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), volcanoContainer, 2, 1);
+	quickSpriteAdd(liquidTextures, "lava-corner-TL.png", volcanoContainer, 3, 1);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TL"), volcanoContainer, 4, 1);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), volcanoContainer, 5, 1);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TL"), volcanoContainer, 1, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), volcanoContainer, 2, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-BL"), volcanoContainer, 3, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), volcanoContainer, 4, 2);
+	quickSpriteAdd(liquidTextures, "lava-corner-TR.png", volcanoContainer, 5, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), volcanoContainer, 6, 2);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TL"), volcanoContainer, 0, 3);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), volcanoContainer, 1, 3);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-BR"), volcanoContainer, 2, 3);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), volcanoContainer, 3, 3);
+	quickSpriteAdd(liquidTextures, "lava-46.png", volcanoContainer, 4, 3);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TR"), volcanoContainer, 5, 3);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-BL"), volcanoContainer, 6, 3);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-shadow-TL"), volcanoContainer, 7, 3);
+	// Animated Flames!
+	flameContainer = quickSpriteRepeater(interactiveTextures[interactMap.get("flame-middle-red")], 9, 3.5);
+	volcanoContainer.addChild(flameContainer);
+	flamesArray = flameContainer.children;
+	flamesArray.forEach(function(flame){
+		animateFlame(flame);
+	});
+	lavaFlowContainer = quickSpriteRepeater(liquidTextures['lava-39.png'], 8, 4);
+	volcanoContainer.addChild(lavaFlowContainer);
+	scene.addChild(volcanoContainer);
+
+	// untreadable Volcano Path
+	fireyPathContainer = quickSpriteRepeater(pathTextures["cave-fire-horizontal.png"], 2);
+	setPosition(fireyPathContainer, 9, 13);
+	scene.addChild(fireyPathContainer);
+
+	// treadable Volcano Path
+	volcanoPathContainer = new Container();
+	setPosition(volcanoPathContainer, 0, 9);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-BL"), volcanoPathContainer, 8, 3);
+	quickSpriteAdd(liquidTextures, "lava-corner-TR.png", volcanoPathContainer, 8, 4);
+	quickSpriteAdd(decorTextures, "rocks.png", volcanoPathContainer, 8, 4);
+	quickSpriteAdd(decorTextures, "treasure.png", volcanoPathContainer, 3, 4);
+	quickSpriteAdd(decorTextures, "rocks.png", volcanoPathContainer, 3, 4);
+	quickSpriteAdd(decorTextures, "rocks.png", volcanoPathContainer, 7, 4);
+	greatRock = new Sprite(decorTextures["rocks.png"]);
+	volcanoPathContainer.addChild(greatRock);
+	setPosition(greatRock, 9, 2);
+	greatRock.scale.set(2,2);
+	scene.addChild(volcanoPathContainer);
+
+	// remember containers that can't be tread on
+	untreadablesArray.push([oasisContainer, "Oasis"]);
+	untreadablesArray.push([sandHill, "Sand Hill"]);
+	untreadablesArray.push([fireyPathContainer, "Firey Path"]);
+	untreadablesArray.push([volcanoContainer, "Volcano"]);
+
+	// remember touchable containers that have a significance
+	collidersArray.push([mineDoorContainer, "Mines"]);
+	collidersArray.push([sandHillDoorContainer, "Sand Hill"]);
+
+	// for visitable containers, include names
 
 	return scene;
 }

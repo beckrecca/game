@@ -174,7 +174,7 @@ function worldMapNavigator(player, container, name) {
 	let place = undefined;
 
 	if (hitTestRectangle(player,container)) {
-		console.log("collision happening");
+		console.log("collision happening with " + name);
 		// check which direction they're moving in
 		place = name;
 		if (player.vx < 0) {
@@ -195,6 +195,17 @@ function worldMapNavigator(player, container, name) {
 		}
 	}
 	return place;
+}
+
+function collisionDetector(player, container, name) {
+	let collider = undefined;
+
+	if (hitTestRectangle(player,container)) {
+		console.log("collision happening with " + name);
+		collider = name;
+	}
+
+	return collider;
 }
 
 /***
