@@ -93,9 +93,11 @@
 							state = northEast;
 						}
 						else if (place == "North West") {
+							setPosition(handsome, 12, 12);
 							state = northWest;
 						}
 						else if (place == "Central") {
+							setPosition(handsome, 7, 7);
 							state = central;
 						}
 						else if (place == "South West") {
@@ -116,47 +118,109 @@
 		}
 
 		function northEast(delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			centralRegionScene.visible = false;
 			worldScene.visible = false;
+			southWestRegionScene.visible = false;
+			if (northEastRegionScene.visible == false) {
+				northEastRegionScene.visible = true;;
+			}
+			// set up NE
 			updateText("");
-			northEastRegionScene.visible = true;
 			northEastRegionScene.addChild(handsome);
 			containPlayer(handsome);
+			// ESC to world map
 			keyboard("Escape").press = () => {
 				setPosition(handsome, 8, 3);
 				state = worldMap;
 			};
+			// protect untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a C untreadable
+				if (u[2] == "NW") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
 		}
 
 		function northWest(delta) {
+			// exit any other scene
+			southWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
 			worldScene.visible = false;
+			centralRegionScene.visible = false;
+			if (northWestRegionScene.visible == false) {
+				northWestRegionScene.visible = true;
+			}
+			// set up NW
 			updateText("");
-			northWestRegionScene.visible = true;
 			northWestRegionScene.addChild(handsome);
 			containPlayer(handsome);
+			// ESC to world map
 			keyboard("Escape").press = () => {
 				setPosition(handsome, 5, 3);
 				state = worldMap;
 			};
+			// protect untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a SW untreadable
+				if (u[2] == "NW") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
+			// listen to the player interacting with treadable colliders
+			collidersArray.forEach(function(c) {
+				container = c[0];
+				name = c[1];
+				let happening = collisionDetector(handsome, container, name);
+			});
 		}
 
 		function central(delta) {
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
 			worldScene.visible = false;
+			southWestRegionScene.visible = false;
+			if (centralRegionScene.visible == false) {
+				centralRegionScene.visible = true;
+			}
+			// turn on central scene
 			updateText("");
-			centralRegionScene.visible = true;
 			centralRegionScene.addChild(handsome);
 			containPlayer(handsome);
+			// ESC to world map
 			keyboard("Escape").press = () => {
-				setPosition(handsome, 9, 11);
+				setPosition(handsome, 9, 10);
 				state = worldMap;
 			};
+			// protect untreadables
+			untreadablesArray.forEach(function(u) {
+				// if this is a C untreadable
+				if (u[2] == "C") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
+			});
 		}
 
 		function southWest (delta) {
-			// turn off world map
+			// exit any other scene
+			northWestRegionScene.visible = false;
+			northEastRegionScene.visible = false;
 			worldScene.visible = false;
+			centralRegionScene.visible = false;
+			if (southWestRegionScene.visible == false) {
+				southWestRegionScene.visible = true;
+			}
 			// turn on SW scene
 			updateText("");
-			southWestRegionScene.visible = true;
 			// add player
 			southWestRegionScene.addChild(handsome);
 			// player interacts with containers
@@ -168,9 +232,12 @@
 			};
 			// stop player from tramping on untreadables
 			untreadablesArray.forEach(function(u) {
-				contained = u[0];
-				name = u[1];
-				let place = worldMapNavigator(handsome, contained, name);
+				// if this is a SW untreadable
+				if (u[2] == "SW") {
+					contained = u[0];
+					name = u[1];
+					let place = worldMapNavigator(handsome, contained, name);
+				}
 			});
 			// listen to the player interacting with treadable colliders
 			collidersArray.forEach(function(c) {

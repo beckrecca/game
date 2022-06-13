@@ -40,7 +40,7 @@ function setup() {
 	keyLogic(characterTextures);
 	
 	// Set the game state
-	state = southWest;
+	state = central;
 
 	// Start the game loop
 	app.ticker.add((delta) => gameLoop(delta));
