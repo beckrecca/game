@@ -75,6 +75,24 @@ function quickBackground(type = "green") {
 		];
 
 	}
+	else if (type == "sandy-grass") {
+		background = [
+			backgroundTextures[backgroundMap.get('grass-full-210')],
+			backgroundTextures[backgroundMap.get('grass-full-211')],
+			backgroundTextures[backgroundMap.get('grass-full-29')],
+			backgroundTextures[backgroundMap.get('grass-full-310')],
+			backgroundTextures[backgroundMap.get('grass-full-311')],
+			backgroundTextures[backgroundMap.get('grass-full-39')],
+			backgroundTextures[backgroundMap.get('green-full-00')],
+			backgroundTextures[backgroundMap.get('green-full-01')],
+			backgroundTextures[backgroundMap.get('green-full-02')],
+			backgroundTextures[backgroundMap.get('green-full-10')],
+			backgroundTextures[backgroundMap.get('green-full-11')],
+			backgroundTextures[backgroundMap.get('green-full-12')],
+			backgroundTextures[backgroundMap.get('green-none')],
+			backgroundTextures[backgroundMap.get('desert-TRBL')]
+			];
+	}
 	return background;
 }
 
@@ -401,7 +419,7 @@ function worldMapScene() {
 	regionsArray.push([southWestContainer, "South West"]);
 
 	// Let's add our handsome player
-	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), (scene.width/2)/32, (scene.height/2)/32);
+	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), (scene.width/4)/32, (scene.height/2)/32);
 	regionMouseover(handsome, "Handsome");
 
 	// Add each region to the scene
@@ -577,7 +595,7 @@ function northWestScene() {
 }
 
 function centralScene() {
-	let centralBackground = quickBackground();
+	let centralBackground = quickBackground("sandy-grass");
 	scene = quickBackgroundHelper(centralBackground, 448, 448);
 	scene.x = 32;
 	scene.y = 32;
@@ -599,6 +617,9 @@ function centralScene() {
 	scene.addChild(mountainContainer);
 
 	// fir forest
+	hillLineEast = quickSpriteRepeaterVertical(decorTextures["hill.png"], 2, 6, 1);
+	hillLineEast.scale.set(2,2);
+	scene.addChild(hillLineEast);
 	firForest = new Container();
 	setPosition(firForest, 2, 0);
 	for (let t = 0; t < 3; t++) {
@@ -642,21 +663,37 @@ function centralScene() {
 
 	// add cave entrance
 	caveEntrance = new Container();
-	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), caveEntrance, 10, 7);
-	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 10, 7);
-	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), caveEntrance, 13, 7);
-	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 13, 7);
-	quickSpriteAdd(buildTextures, buildTextureMap.get("dark-light-BL"), caveEntrance, 11, 7);
-	quickSpriteAdd(buildTextures, buildTextureMap.get("dark-light-BR"), caveEntrance, 12, 7);
-	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 11, 7.5);
-	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 12, 7.5);
+	setPosition(caveEntrance, 10, 7);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), caveEntrance, 0, 0);
+	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 0, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("desert-light-TRBL"), caveEntrance, 3, 0);
+	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 3, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("dark-light-BL"), caveEntrance, 1, 0);
+	quickSpriteAdd(buildTextures, buildTextureMap.get("dark-light-BR"), caveEntrance, 2, 0);
+	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 1, 0.5);
+	quickSpriteAdd(decorTextures, "rocks.png", caveEntrance, 2, 0.5);
 	scene.addChild(caveEntrance);
+
+	// add details
+	quickSpriteAdd(decorTextures, "firs.png", scene, 8, 13);
+	quickSpriteAdd(decorTextures, "firs.png", scene, 13, 13);
+	for (let z = 0; z < 3; z++) {
+		firfirs = quickSpriteRepeater(decorTextures["firs.png"], 2, 5 + z, 4);
+		scene.addChild(firfirs);
+	}
+	stonestones = quickSpriteRepeater(decorTextures["rocks.png"], 7, 8, 7);
+	scene.addChild(stonestones);
+	stonesvertical = quickSpriteRepeaterVertical(decorTextures["rocks.png"], 6, 7, 8);
+	scene.addChild(stonesvertical);
 
 	// remember what can't be stomped on
 	untreadablesArray.push([mountainContainer, "Central Mountains", "C"]);
 	untreadablesArray.push([mountainHouseContainer, "Valley Town", "C"]);
 	untreadablesArray.push([caveContainer, "Valley Cave", "C"]);
 	untreadablesArray.push([firForest, "Fir Forest", "C"]);
+
+	// remember special collision evens
+	collidersArray.push([caveEntrance, "Central Cave Entrance"]);
 
 	return scene;
 }
@@ -667,6 +704,94 @@ function northEastScene() {
 	scene.x = 32;
 	scene.y = 32;
 	app.stage.addChild(scene);
+
+	// the sea
+	seaContainer = new Container();
+	setPosition(seaContainer, 3, 0);
+	fullSeaNETexture = liquidTextures["water-full.png"];
+	quickSpriteAdd(decorTextures, "rocks.png", seaContainer);
+	quickSpriteAdd(liquidTextures, "water-grass-TL2.png", seaContainer, 1);
+	northShore = quickSpriteRepeater(liquidTextures["water-top.png"], 5, 0, 2);
+	seaContainer.addChild(northShore);
+	for (s = 0; s < 3; s++) {
+		northSea = quickSpriteRepeater(fullSeaNETexture, 6, s, 5);
+		seaContainer.addChild(northSea);
+	}
+	for (o = 0; o < 4; o++) {
+		northWestSea = quickSpriteRepeaterVertical(fullSeaNETexture, 6, o + 1, 1);
+		seaContainer.addChild(northWestSea);
+	}
+	for (q = 0; q < 2; q++) {
+		eastSea = quickSpriteRepeater(fullSeaNETexture, 2, 3 + q, 9);
+		seaContainer.addChild(eastSea);
+	}
+	quickSpriteAdd(liquidTextures, "water-grass-TL2.png", seaContainer, 0, 1);
+	westShore = quickSpriteRepeaterVertical(liquidTextures["water-left.png"], 5, 0, 2);
+	seaContainer.addChild(westShore);
+	for (w = 0; w < 3; w++) {
+		westChannel = quickSpriteRepeaterVertical(fullSeaNETexture, 3, 1+w, 4);
+		seaContainer.addChild(westChannel);
+	}
+	westIslandShore = quickSpriteRepeaterVertical(liquidTextures["water-right.png"], 3, 5, 3);
+	seaContainer.addChild(westIslandShore);
+
+	// handsome can walk along the shore
+	walkableShore = new Container();
+	setPosition(walkableShore, 3, 7);
+	quickSpriteAdd(liquidTextures, "water-grass-BL3.png", walkableShore, 0, 0);
+	quickSpriteAdd(liquidTextures, "water-grass-rounded.png", walkableShore, 5, 0);
+	middleShore = quickSpriteRepeater(liquidTextures["water-bottom.png"], 4, 0, 1);
+	walkableShore.addChild(middleShore);
+	scene.addChild(walkableShore);
+
+	// the southern bit is a different block entirely
+	southSeaContainer = new Container();
+	setPosition(southSeaContainer, 8, 7);
+	centralShore = quickSpriteRepeaterVertical(liquidTextures["water-left.png"], 5, 0, 1);
+	southSeaContainer.addChild(centralShore);
+	quickSpriteAdd(liquidTextures, "water-grass-BL3.png", southSeaContainer, 0, 6);
+	southNEShore = quickSpriteRepeater(liquidTextures["water-bottom.png"], 5, 6, 1);
+	southSeaContainer.addChild(southNEShore);
+	for (p = 0; p < 4; p++) {
+		middleSeas = quickSpriteRepeater(fullSeaNETexture, 5, p + 2, 1);
+		southSeaContainer.addChild(middleSeas);
+	}
+	/**
+	fullSeaNETexture = liquidTextures["water-full.png"];
+	fullSeaNEContainer = new quickSpriteRepeaterVertical(fullSeaNETexture, 2, 4);
+	seaContainer.addChild(fullSeaNEContainer);
+	quickSpriteAdd(liquidTextures, "water-grass-TL2.png", seaContainer, 0, 1);
+	quickSpriteAdd(liquidTextures, "water-grass-rounded.png", seaContainer, 1, 1);
+	quickSpriteAdd(liquidTextures, "water-full.png", seaContainer, 2, 1);
+	quickSpriteAdd(liquidTextures, "water-bottom.png", seaContainer, 3, 1);
+	quickSpriteAdd(liquidTextures, "water-left.png", seaContainer, 0, 2);
+	quickSpriteAdd(liquidTextures, "water-full.png", seaContainer, 1, 2);
+	quickSpriteAdd(liquidTextures, "water-grass-BR.png", seaContainer, 2, 2);
+	quickSpriteAdd(decorTextures, "flowers.png", seaContainer, 3, 2);
+	quickSpriteAdd(liquidTextures, "water-left.png", seaContainer, 4, 2);
+	quickSpriteAdd(liquidTextures, "water-grass-BL.png", seaContainer, 0, 3);
+	quickSpriteAdd(liquidTextures, "water-right.png", seaContainer, 1, 3);
+	quickSpriteAdd(decorTextures, "mountain.png", seaContainer, 2, 3);
+	quickSpriteAdd(decorTextures, "castle.png", seaContainer, 3, 3);
+	quickSpriteAdd(liquidTextures, "water-grass-BL.png", seaContainer, 4, 3);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-TRBL"), seaContainer, 0, 4);
+	quickSpriteAdd(decorTextures, "town.png", seaContainer, 0, 4);
+	quickSpriteAdd(liquidTextures, "water-left.png", seaContainer, 1, 4);
+	quickSpriteAdd(liquidTextures, "water-grass-rounded-3.png", seaContainer, 2, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("stone-sandy-TRBL"), seaContainer, 3, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-BR"), seaContainer, 4, 4);
+	quickSpriteAdd(backgroundTextures, backgroundMap.get("grass-sandy-TR"), seaContainer, 0, 5);
+	quickSpriteAdd(decorTextures, "rocks.png", seaContainer, 0, 5);
+	quickSpriteAdd(liquidTextures, "water-grass-BL.png", seaContainer, 1, 5);
+	southNEShore = new quickSpriteRepeater(liquidTextures["water-bottom.png"], 3, 5, 2);
+	seaContainer.addChild(southNEShore);
+	**/
+	scene.addChild(seaContainer);
+	scene.addChild(southSeaContainer);
+
+	// remember containers that can't be tread on
+	untreadablesArray.push([seaContainer, "North Sea", "NE"]);
+	untreadablesArray.push([southSeaContainer, "South Sea", "NE"]);
 
 	return scene;
 }
