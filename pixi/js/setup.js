@@ -39,8 +39,8 @@ function setup() {
 	// establish key commands and logic
 	keyLogic(characterTextures);
 	
-	// Set the game state
-	state = northEast;
+	// Set the game state: MAIN IS worldMap
+	state = worldMap;
 
 	// Start the game loop
 	app.ticker.add((delta) => gameLoop(delta));
