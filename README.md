@@ -1,5 +1,5 @@
-# Untitled Game
-Playing around with [pixijs](https://pixijs.com/)
+# Handsome's Dreamworld: Land of Reverie
+A 2D goof on an RPG made with [pixijs](https://pixijs.com/)
 
 ## Credits:
 - Art by [Linnea Zimmerman](https://sharm.itch.io/), somewhat adapted
