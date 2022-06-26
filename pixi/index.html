@@ -8,6 +8,7 @@
 	<script src="js/texturemap.js"></script>
 	<script src="js/controls.js"></script>
 	<script src="js/scene.js"></script>
+	<script src="js/play.js"></script>
 	<script src="js/setup.js"></script>
 	<style>
 		body {
@@ -48,12 +49,14 @@
 		.add("characters","assets/maps/characters.json")
 		.add("environment","assets/maps/environment.json")
 		.add("interactives","assets/maps/interactives.json")
+		.add("items","assets/maps/items.json")
 		.add("liquids", "assets/maps/liquids.json")
 		.add("paths","assets/maps/paths.json")
+		.add("special","assests/maps/special.json")
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
-		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, liquidTextures, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, state, untreadablesArray = [], worldScene;
+		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, itemTextures, liquidTextures, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, specialTextures, state, untreadablesArray = [], worldScene;
 
 		// gameloop
 		function gameLoop(delta) {

@@ -12,8 +12,10 @@ function setup() {
 	characterTextures = resources["characters"].textures;
 	decorTextures = resources["environment"].textures;
 	interactiveTextures = resources["interactives"].textures;
+	itemTextures = resources["items"].textures;
 	liquidTextures = resources["liquids"].textures;
 	pathTextures = resources["paths"].textures;
+	specialTextures = resources["special"].textures;
 
 	// Create other region Scenes
 	northWestRegionScene = northWestScene();
