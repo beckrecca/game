@@ -32,6 +32,7 @@
 		Sprite = PIXI.Sprite,
 		Text = PIXI.Text,
 		TextStyle = PIXI.TextStyle,
+		Texture = PIXI.Texture,
 		tileMap = PIXI.Tilemap,
 		tilingSprite = PIXI.TilingSprite,
 		utils = PIXI.utils;
@@ -61,7 +62,7 @@
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
-		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, itemTextures, liquidTextures, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, regionsArray = [], southWestRegionScene, specialTextures, state, untreadablesArray = [], worldScene;
+		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, itemTextures, liquidTextures, listen = true, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, prologueScene, regionsArray = [], southWestRegionScene, specialTextures, state, untreadablesArray = [], worldScene;
 
 		// gameloop
 		function gameLoop(delta) {
@@ -71,11 +72,14 @@
 
 		// worldMap scene
 		function worldMap(delta) {
+			// listen to keyboard commands
+			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
 			centralRegionScene.visible = false;
 			southWestRegionScene.visible = false;
+			prologueScene.visible = false;
 			if (worldScene.visible == false) {
 				worldScene.visible = true;
 			}
@@ -127,11 +131,14 @@
 		}
 
 		function northEast(delta) {
+			// listen to keyboard commands
+			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			centralRegionScene.visible = false;
 			worldScene.visible = false;
 			southWestRegionScene.visible = false;
+			prologueScene.visible = false;
 			if (northEastRegionScene.visible == false) {
 				northEastRegionScene.visible = true;;
 			}
@@ -156,11 +163,14 @@
 		}
 
 		function northWest(delta) {
+			// listen to keyboard commands
+			listen = true;
 			// exit any other scene
 			southWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
 			worldScene.visible = false;
 			centralRegionScene.visible = false;
+			prologueScene.visible = false;
 			if (northWestRegionScene.visible == false) {
 				northWestRegionScene.visible = true;
 			}
@@ -191,11 +201,14 @@
 		}
 
 		function central(delta) {
+			// listen to keyboard commands
+			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
 			worldScene.visible = false;
 			southWestRegionScene.visible = false;
+			prologueScene.visible = false;
 			if (centralRegionScene.visible == false) {
 				centralRegionScene.visible = true;
 			}
@@ -226,11 +239,14 @@
 		}
 
 		function southWest (delta) {
+			// listen to keyboard commands
+			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
 			worldScene.visible = false;
 			centralRegionScene.visible = false;
+			prologueScene.visible = false;
 			if (southWestRegionScene.visible == false) {
 				southWestRegionScene.visible = true;
 			}
