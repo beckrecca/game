@@ -15,6 +15,10 @@
 			text-align:center;
 			background-color: #000;
 		}
+		@font-face {
+		  font-family: TinyTitle;
+		  src: url("assets/font/TinyTitle.ttf");
+		}
 	</style>
 </head>
 <body>
@@ -52,7 +56,8 @@
 		.add("items","assets/maps/items.json")
 		.add("liquids", "assets/maps/liquids.json")
 		.add("paths","assets/maps/paths.json")
-		.add("special","assests/maps/special.json")
+		.add("special","assets/maps/special.json")
+		.add("TinyTitle", "assets/font/TinyTitle.ttf")
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
@@ -92,19 +97,19 @@
 					// if the player answers yes (Enter)
 					keyboard("Enter").press = () => {
 						// navigate to the applicable place
-						if (place == "North East") {
+						if (place == "Mystic") {
 							setPosition(handsome, 0, 12.5);
 							state = northEast;
 						}
-						else if (place == "North West") {
+						else if (place == "Warbling Forest") {
 							setPosition(handsome, 12, 12);
 							state = northWest;
 						}
-						else if (place == "Central") {
+						else if (place == "Poof Mountains") {
 							setPosition(handsome, 13, 8);
 							state = central;
 						}
-						else if (place == "South West") {
+						else if (place == "Pretzel") {
 							setPosition(handsome, 12, 0);
 							state = southWest;
 						}
@@ -115,7 +120,7 @@
 						place = undefined;
 						handsome.x = playerXpos;
 						handsome.y = playerYpos;
-						updateText("World Map");
+						updateText("Land of Reverie");
 					};
 				}
 			});

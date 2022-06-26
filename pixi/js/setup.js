@@ -28,12 +28,12 @@ function setup() {
 
 	// Add text at bottom
 	const style = new TextStyle ({
-		fontFamily: "Helvetica",
-		fontSize: 20,
+		fontFamily: 'TinyTitle',
+		fontSize: 28,
 		fill: "white"
 	});
 
-	message = new Text("World Map", style);
+	message = new Text("", style);
 	message.x = (app.stage.width/2) - (message.width/2) + 32;
 	message.y = 480;
 	app.stage.addChild(message);

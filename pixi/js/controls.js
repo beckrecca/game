@@ -64,58 +64,22 @@ function containPlayer(player) {
 
 	// if player is about to leave the scene, stop him
 	if (playerXpos > xmin && playerXpos < xmax) {
-		player.x += player.vx;/**
-		console.log("playerx: " + playerXpos);
-		console.log("playery: " + playerYpos);
-		console.log("xmin: " + xmin);
-		console.log("xmax: " + xmax);
-		console.log("ymin: " + ymin);
-		console.log("ymax: " + ymax); **/
+		player.x += player.vx;
 	}
 	else if (playerXpos <= xmin && player.vx > 0) {
-		player.x += player.vx;/**
-		console.log("playerx: " + playerXpos);
-		console.log("playery: " + playerYpos);
-		console.log("xmin: " + xmin);
-		console.log("xmax: " + xmax);
-		console.log("ymin: " + ymin);
-		console.log("ymax: " + ymax); **/
+		player.x += player.vx;
 	}
 	else if (playerXpos >= xmax && player.vx <= 0) {
-		player.x += player.vx;/**
-		console.log("playerx: " + playerXpos);
-		console.log("playery: " + playerYpos);
-		console.log("xmin: " + xmin);
-		console.log("xmax: " + xmax);
-		console.log("ymin: " + ymin);
-		console.log("ymax: " + ymax); **/
+		player.x += player.vx;
 	}
 	if (playerYpos > ymin && playerYpos < ymax) {
-		player.y += player.vy;/**
-		console.log("playerx: " + playerXpos);
-		console.log("playery: " + playerYpos);
-		console.log("xmin: " + xmin);
-		console.log("xmax: " + xmax);
-		console.log("ymin: " + ymin);
-		console.log("ymax: " + ymax); **/
+		player.y += player.vy;
 	}
 	else if (playerYpos <= ymin && player.vy > 0) {
-		player.y += player.vy;/**
-		console.log("playerx: " + playerXpos);
-		console.log("playery: " + playerYpos);
-		console.log("xmin: " + xmin);
-		console.log("xmax: " + xmax);
-		console.log("ymin: " + ymin);
-		console.log("ymax: " + ymax); **/
+		player.y += player.vy;
 	}
 	else if (playerYpos >= ymax && player.vy <= 0) {
-		player.y += player.vy; /**
-		console.log("playerx: " + playerXpos);
-		console.log("playery: " + playerYpos);
-		console.log("xmin: " + xmin);
-		console.log("xmax: " + xmax);
-		console.log("ymin: " + ymin);
-		console.log("ymax: " + ymax); **/
+		player.y += player.vy; 
 	}
 }
 

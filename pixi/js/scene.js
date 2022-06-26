@@ -146,7 +146,7 @@ function regionMouseover(container, name) {
 	    updateText(name);
 	});
 	container.on('mouseout', () => {
-	    updateText("World Map");
+	    updateText("Land of Reverie");
 	});
 }
 
@@ -329,7 +329,7 @@ function worldMapScene() {
 	quickSpriteAdd(backgroundTextures, backgroundMap.get("stone-grassy-TRBL"), centralContainer, 2, 4);
 	quickSpriteAdd(decorTextures, "town.png", centralContainer, 2, 4);
 	quickSpriteAdd(decorTextures, 'hill.png', centralContainer, 1);
-	regionMouseover(centralContainer, "Central Mountains");
+	regionMouseover(centralContainer, "Poof Mountains");
 
 	// add some random rocks
 	for (let k = 0; k < 6; k++) {
@@ -375,7 +375,7 @@ function worldMapScene() {
 	quickSpriteAdd(liquidTextures, "water-grass-BL.png", northEastContainer, 1, 5);
 	southShore = new quickSpriteRepeater(liquidTextures["water-bottom.png"], 3, 5, 2);
 	northEastContainer.addChild(southShore);
-	regionMouseover(northEastContainer, "Northeast Sea Name TBD");
+	regionMouseover(northEastContainer, "Mystic");
 
 	// Add some random plant life
 	for (let t = 0; t < 8; t++) {
@@ -410,13 +410,13 @@ function worldMapScene() {
 	quickSpriteAdd(liquidTextures, "lava-corner-TR.png", southWestContainer, 1, 3);
 	quickSpriteAdd(decorTextures, "rocks.png", southWestContainer, 1, 3);
 	quickSpriteAdd(backgroundTextures, backgroundMap.get("desert-BR"), southWestContainer, 3, 3);
-	regionMouseover(southWestContainer, "Southwest Desert Name TBD");
+	regionMouseover(southWestContainer, "Pretzel");
 
 	// remember our regions and their names
-	regionsArray.push([northWestContainer, "North West"]);
-	regionsArray.push([centralContainer, "Central"]);
-	regionsArray.push([northEastContainer, "North East"]);
-	regionsArray.push([southWestContainer, "South West"]);
+	regionsArray.push([northWestContainer, "Warbling Forest"]);
+	regionsArray.push([centralContainer, "Poof Mountains"]);
+	regionsArray.push([northEastContainer, "Mystic"]);
+	regionsArray.push([southWestContainer, "Pretzel"]);
 
 	// Let's add our handsome player
 	handsome = createSprite(characterTextures, spriteMap.get("handsome-still-forward"), (scene.width/4)/32, (scene.height/2)/32);
@@ -588,8 +588,8 @@ function northWestScene() {
 	untreadablesArray.push([townSouthEastContainer, "townSouthEast", "NW"]);
 
 	// remember special collision evens
-	collidersArray.push([homeDoorContainer, "NW House Door"]);
-	collidersArray.push([wellContainer, "NW Well"]);
+	collidersArray.push([homeDoorContainer, "Potions Master Door"]);
+	collidersArray.push([wellContainer, "Warbling Well"]);
 
 	return scene;
 }
@@ -693,7 +693,7 @@ function centralScene() {
 	untreadablesArray.push([firForest, "Fir Forest", "C"]);
 
 	// remember special collision evens
-	collidersArray.push([caveEntrance, "Central Cave Entrance"]);
+	collidersArray.push([caveEntrance, "Floof Caves"]);
 
 	return scene;
 }
@@ -983,7 +983,7 @@ function southWestScene() {
 
 	// remember touchable containers that have a significance
 	collidersArray.push([mineDoorContainer, "Mines"]);
-	collidersArray.push([sandHillDoorContainer, "Sand Hill"]);
+	collidersArray.push([sandHillDoorContainer, "Brezehuegel"]);
 
 	// for visitable containers, include names
 
