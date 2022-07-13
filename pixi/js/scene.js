@@ -146,7 +146,12 @@ function regionMouseover(container, name) {
 	    updateText(name);
 	});
 	container.on('mouseout', () => {
-	    updateText("Land of Reverie");
+		if (worldMapScene.visible == true) {
+	    	updateText("Land of Reverie");
+	    }
+	    else {
+	    	updateText("");
+	    }
 	});
 }
 

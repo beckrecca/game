@@ -25,6 +25,7 @@ function setup() {
 
 	// Create the prologue
 	prologueScene = prologueBackground();
+	barnScene = barnBackground();
 
 	// Create a background for our map world
 	worldScene = worldMapScene();
@@ -37,7 +38,7 @@ function setup() {
 	});
 
 	message = new Text("", style);
-	message.x = (app.stage.width/2) - (message.width/2) + 32;
+	message.x = (480/2) - (message.width/2) + 32;
 	message.y = 480;
 	app.stage.addChild(message);
 
@@ -45,7 +46,7 @@ function setup() {
 	keyLogic(characterTextures);
 	
 	// Set the game state: MAIN IS worldMap
-	state = prologue;
+	state = barn;
 	//state = worldMap;
 
 	// Start the game loop
@@ -54,7 +55,7 @@ function setup() {
 
 function updateText(text) {
 	message.text = text;
-	message.x = (app.stage.width/2) - (message.width/2) + 32;
+	message.x = (480/2) - (message.width/2) + 32;
 }
 
 function createSprite(textures, textureName, x = 0, y = 0, vx = 0, vy = 0) {
@@ -97,132 +98,116 @@ function keyLogic(textures) {
 
   	//Left arrow key `press` method
   	left.press = () => {
-  		if (listen != false) {
-		    //Change the handsome's velocity when the key is pressed
-		    handsome.vx = -3;
-		    handsome.vy = 0;
-		    handsome.texture = movingTextures[moveLeft];
-		    alt = false;
-		    leftInterval = setInterval(function() {
-		    	alt = !alt;
-		    	if (alt) {
-		    		handsome.texture = movingTextures[moveLeftAlt];
-		    	}
-		    	else {
-		    		handsome.texture = movingTextures[moveLeft];
-		    	}
-		    }, 250);
-		    clearInterval(rightInterval);
-		    clearInterval(downInterval);
-		    clearInterval(upInterval);
-		}
+	    //Change the handsome's velocity when the key is pressed
+	    handsome.vx = -3;
+	    handsome.vy = 0;
+	    handsome.texture = movingTextures[moveLeft];
+	    alt = false;
+	    leftInterval = setInterval(function() {
+	    	alt = !alt;
+	    	if (alt) {
+	    		handsome.texture = movingTextures[moveLeftAlt];
+	    	}
+	    	else {
+	    		handsome.texture = movingTextures[moveLeft];
+	    	}
+	    }, 150);
+	    clearInterval(rightInterval);
+	    clearInterval(downInterval);
+	    clearInterval(upInterval);
 	};
 
   	//Left arrow key `release` method
     left.release = () => {
-    	if (listen != false) {
-    		    //If the left arrow has been released, and the right arrow isn't down,
-    		    //and the handsome isn't moving vertically:
-    		    //Stop the handsome
-    		    if (!right.isDown && handsome.vy === 0) {
-    		    	handsome.vx = 0;
-    		    	handsome.texture = movingTextures[still];
-    		    	clearInterval(leftInterval);
-    		    }
-    		}
+	    //If the left arrow has been released, and the right arrow isn't down,
+	    //and the handsome isn't moving vertically:
+	    //Stop the handsome
+	    if (!right.isDown && handsome.vy === 0) {
+	    	handsome.vx = 0;
+	    	handsome.texture = movingTextures[still];
+	    	clearInterval(leftInterval);
+	    }
 	};
 
 	//Up
 	up.press = () => {
-		if (listen != false) {
-				handsome.vy = -3;
-				handsome.vx = 0;
-				handsome.texture = movingTextures[moveUp];
-				alt = false;
-			    upInterval = setInterval(function() {
-			    	alt = !alt;
-			    	if (alt) {
-			    		handsome.texture = movingTextures[moveUpAlt];
-			    	}
-			    	else {
-			    		handsome.texture = movingTextures[moveUp];
-			    	}
-				}, 150);
-				clearInterval(rightInterval);
-		    	clearInterval(downInterval);
-		    	clearInterval(leftInterval);
-			}
+		handsome.vy = -3;
+		handsome.vx = 0;
+		handsome.texture = movingTextures[moveUp];
+		alt = false;
+	    upInterval = setInterval(function() {
+	    	alt = !alt;
+	    	if (alt) {
+	    		handsome.texture = movingTextures[moveUpAlt];
+	    	}
+	    	else {
+	    		handsome.texture = movingTextures[moveUp];
+	    	}
+		}, 150);
+		clearInterval(rightInterval);
+    	clearInterval(downInterval);
+    	clearInterval(leftInterval);
 		};
 
 	up.release = () => {
-		if (listen != false) {
-			if (!down.isDown && handsome.vx === 0) {
-				handsome.vy = 0;
-				handsome.texture = movingTextures[still];
-				clearInterval(upInterval);
-			}
+		if (!down.isDown && handsome.vx === 0) {
+			handsome.vy = 0;
+			handsome.texture = movingTextures[still];
+			clearInterval(upInterval);
 		}
 	};
 
 	//Right
 	right.press = () => {
-		if (listen != false) {
-				handsome.vx = 3;
-				handsome.vy = 0;
-				handsome.texture = movingTextures[moveRight];
-				alt = false;
-			    rightInterval = setInterval(function() {
-			    	alt = !alt;
-			    	if (alt) {
-			    		handsome.texture = movingTextures[moveRightAlt];
-			    	}
-			    	else {
-			    		handsome.texture = movingTextures[moveRight];
-			    	}
-				}, 150);
-				clearInterval(leftInterval);
-		    	clearInterval(downInterval);
-		    	clearInterval(upInterval);
-		    }
+		handsome.vx = 3;
+		handsome.vy = 0;
+		handsome.texture = movingTextures[moveRight];
+		alt = false;
+	    rightInterval = setInterval(function() {
+	    	alt = !alt;
+	    	if (alt) {
+	    		handsome.texture = movingTextures[moveRightAlt];
+	    	}
+	    	else {
+	    		handsome.texture = movingTextures[moveRight];
+	    	}
+		}, 150);
+		clearInterval(leftInterval);
+    	clearInterval(downInterval);
+    	clearInterval(upInterval);
 		};
 	right.release = () => {
-		if (listen != false) {
-			if (!left.isDown && handsome.vy === 0) {
-				handsome.vx = 0;
-				handsome.texture = movingTextures[still];
-				clearInterval(rightInterval);
-			}
+		if (!left.isDown && handsome.vy === 0) {
+			handsome.vx = 0;
+			handsome.texture = movingTextures[still];
+			clearInterval(rightInterval);
 		}
 	};
 
 	//Down
 	down.press = () => {
-		if (listen != false) {
-			handsome.vy = 3;
-			handsome.vx = 0;
-			handsome.texture = movingTextures[moveDown];
-			alt = false;
-		    downInterval = setInterval(function() {
-		    	alt = !alt;
-		    	if (alt) {
-		    		handsome.texture = movingTextures[moveDownAlt];
-		    	}
-		    	else {
-		    		handsome.texture = movingTextures[moveDown];
-		    	}
-			}, 150);
-			clearInterval(rightInterval);
-		    clearInterval(leftInterval);
-		    clearInterval(upInterval);
-		}
+		handsome.vy = 3;
+		handsome.vx = 0;
+		handsome.texture = movingTextures[moveDown];
+		alt = false;
+	    downInterval = setInterval(function() {
+	    	alt = !alt;
+	    	if (alt) {
+	    		handsome.texture = movingTextures[moveDownAlt];
+	    	}
+	    	else {
+	    		handsome.texture = movingTextures[moveDown];
+	    	}
+		}, 150);
+		clearInterval(rightInterval);
+	    clearInterval(leftInterval);
+	    clearInterval(upInterval);
 	};
 	down.release = () => {
-		if (listen != false) {
-			if (!up.isDown && handsome.vx === 0) {
-				handsome.vy = 0;
-				handsome.texture = movingTextures[still];
-				clearInterval(downInterval);
-			}
+		if (!up.isDown && handsome.vx === 0) {
+			handsome.vy = 0;
+			handsome.texture = movingTextures[still];
+			clearInterval(downInterval);
 		}
 	};
 }

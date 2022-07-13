@@ -25,6 +25,7 @@
 	<script>
 		//Aliases
 		const Application = PIXI.Application,
+		AnimatedSprite = PIXI.AnimatedSprite,
 		base = PIXI.BaseTexture,
 		Container = PIXI.Container,
 		loader = PIXI.Loader.shared,
@@ -62,7 +63,7 @@
 		.load(setup);
 
 		// initialize variables that may be used in more than one function
-		let background, backgroundTextures, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, handsome, interactiveTextures, itemTextures, liquidTextures, listen = true, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, prologueScene, regionsArray = [], southWestRegionScene, specialTextures, state, untreadablesArray = [], worldScene;
+		let background, backgroundTextures, barnScene, buildTextures, centralRegionScene, characterTextures, collidersArray = [], decorContainer, decorTextures, dreamScene, handsome, interactiveTextures, itemTextures, liquidTextures, message, mineDoorContainer, northEastRegionScene, northWestRegionScene, pathTextures, prologueScene, regionsArray = [], sheeps = [], southWestRegionScene, specialSheet, specialTextures, state, t = 0, tempPlayer, untreadablesArray = [], worldScene;
 
 		// gameloop
 		function gameLoop(delta) {
@@ -72,8 +73,6 @@
 
 		// worldMap scene
 		function worldMap(delta) {
-			// listen to keyboard commands
-			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
@@ -84,6 +83,9 @@
 				worldScene.visible = true;
 			}
 			worldScene.addChild(handsome);
+			// ensure message is properly formatted
+			message.x = (app.stage.width/2) - (message.width/2) + 32;
+			message.y = 480;
 			// contain player within the scene
 			containPlayer(handsome);
 			// player interacts with different world containers
@@ -131,8 +133,6 @@
 		}
 
 		function northEast(delta) {
-			// listen to keyboard commands
-			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			centralRegionScene.visible = false;
@@ -146,6 +146,9 @@
 			updateText("");
 			northEastRegionScene.addChild(handsome);
 			containPlayer(handsome);
+			// ensure message is properly formatted
+			message.x = (app.stage.width/2) - (message.width/2) + 32;
+			message.y = 480;
 			// ESC to world map
 			keyboard("Escape").press = () => {
 				setPosition(handsome, 8, 3);
@@ -163,8 +166,6 @@
 		}
 
 		function northWest(delta) {
-			// listen to keyboard commands
-			listen = true;
 			// exit any other scene
 			southWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
@@ -178,6 +179,9 @@
 			updateText("");
 			northWestRegionScene.addChild(handsome);
 			containPlayer(handsome);
+			// ensure message is properly formatted
+			message.x = (app.stage.width/2) - (message.width/2) + 32;
+			message.y = 480;
 			// ESC to world map
 			keyboard("Escape").press = () => {
 				setPosition(handsome, 5, 3);
@@ -201,14 +205,13 @@
 		}
 
 		function central(delta) {
-			// listen to keyboard commands
-			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
 			worldScene.visible = false;
 			southWestRegionScene.visible = false;
 			prologueScene.visible = false;
+			barnScene.visible = false;
 			if (centralRegionScene.visible == false) {
 				centralRegionScene.visible = true;
 			}
@@ -216,6 +219,9 @@
 			updateText("");
 			centralRegionScene.addChild(handsome);
 			containPlayer(handsome);
+			// ensure message is properly formatted
+			message.x = (app.stage.width/2) - (message.width/2) + 32;
+			message.y = 480;
 			// ESC to world map
 			keyboard("Escape").press = () => {
 				setPosition(handsome, 9, 10);
@@ -239,8 +245,6 @@
 		}
 
 		function southWest (delta) {
-			// listen to keyboard commands
-			listen = true;
 			// exit any other scene
 			northWestRegionScene.visible = false;
 			northEastRegionScene.visible = false;
@@ -256,6 +260,9 @@
 			southWestRegionScene.addChild(handsome);
 			// player interacts with containers
 			containPlayer(handsome);
+			// ensure message is properly formatted
+			message.x = (app.stage.width/2) - (message.width/2) + 32;
+			message.y = 480;
 			// ESC to world map
 			keyboard("Escape").press = () => {
 				setPosition(handsome, 3, 9);
