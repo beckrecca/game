@@ -182,10 +182,10 @@ function animateFlame(animatedFlame, color = "red") {
 function buildHouse(kind = "castle") {
 	let windowTexture;
 	if (kind == "castle") {
-		windowTexture = "tomb-entrance.png";
+		windowTexture = "blue-window.png";
 	}
 	else {
-		windowTexture = "mine-entrance.png";
+		windowTexture = "red-window.png";
 	}
 	buildHouseContainer = new Container();
 
@@ -209,32 +209,18 @@ function buildHouse(kind = "castle") {
 	quickSpriteAdd(buildTextures,buildTextureMap.get(kind + "-light-BR"), buildHouseContainer, 4,1.5);
 	scene.addChild(buildHouseContainer);
 
-	// add a flipped tomb entrance to make a window
-	windowTopLeft = new Sprite(decorTextures[windowTexture]);
-	windowTopLeft.scale.y = -1;
-	buildHouseContainer.addChild(windowTopLeft);
-	setPosition(windowTopLeft, 1, 2);
-	windowTopRight = new Sprite(decorTextures[windowTexture]);
-	windowTopRight.scale.y = -1;
-	buildHouseContainer.addChild(windowTopRight);
-	setPosition(windowTopRight, 3, 2);
+	// add some windows
+	quickSpriteAdd(itemTextures, windowTexture, buildHouseContainer, 1, 1);
+	quickSpriteAdd(itemTextures, windowTexture, buildHouseContainer, 3, 1);
 
 	// first row
 	quickSpriteAdd(buildTextures,buildTextureMap.get(kind + "-shadow-BL"), buildHouseContainer, 0, 2.5);
-	quickSpriteAdd(buildTextures,buildTextureMap.get(kind + "-shadow-BR"), buildHouseContainer, 1, 2.25);
-	// add a flipped tomb entrance to make a window
-	windowLeft = new Sprite(decorTextures[windowTexture]);
-	windowLeft.scale.y = -1;
-	setPosition(windowLeft, 1, 3.5);
-	buildHouseContainer.addChild(windowLeft);
+	// add another window
+	quickSpriteAdd(itemTextures, windowTexture, buildHouseContainer, 1, 2.5);
 	quickSpriteAdd(buildTextures,buildTextureMap.get(kind + "-shadow-BR"), buildHouseContainer, 2, 2.5);
 	quickSpriteAdd(interactiveTextures, interactMap.get("door-middle-whole"), buildHouseContainer, 2, 2.5);
-	quickSpriteAdd(buildTextures,buildTextureMap.get(kind + "-shadow-BL"), buildHouseContainer, 3, 2.25);
-	// add a flipped tomb entrance to make a window
-	windowRight = new Sprite(decorTextures[windowTexture]);
-	windowRight.scale.y = -1;
-	setPosition(windowRight, 3, 3.5);
-	buildHouseContainer.addChild(windowRight);
+	// add another window
+	quickSpriteAdd(itemTextures, windowTexture, buildHouseContainer, 3, 2.5);
 	quickSpriteAdd(buildTextures,buildTextureMap.get(kind + "-shadow-BR"), buildHouseContainer, 4, 2.5);
 
 	return buildHouseContainer;
@@ -519,18 +505,12 @@ function northWestScene() {
 	setPosition(houseDetails, 2, 2);
 	quickSpriteAdd(buildTextures,buildTextureMap.get("castle-shadow-BL"), houseDetails, 0, 2);
 	quickSpriteAdd(buildTextures,buildTextureMap.get("castle-shadow-BR"), houseDetails, 1, 1.75);
-	// add a flipped tomb entrance to make a window
-	windowLeft = new Sprite(decorTextures["tomb-entrance.png"]);
-	windowLeft.scale.y = -1;
-	setPosition(windowLeft, 1, 3);
-	houseDetails.addChild(windowLeft);
+	// add a window
+	quickSpriteAdd(itemTextures, "blue-window.png", houseDetails, 1, 2);
 	quickSpriteAdd(buildTextures,buildTextureMap.get("castle-shadow-BR"), houseDetails, 2, 2);
 	quickSpriteAdd(buildTextures,buildTextureMap.get("castle-shadow-BL"), houseDetails, 3, 1.75);
-	// add a flipped tomb entrance to make a window
-	windowRight = new Sprite(decorTextures["tomb-entrance.png"]);
-	windowRight.scale.y = -1;
-	setPosition(windowRight, 3, 3);
-	houseDetails.addChild(windowRight);
+	// add another window
+	quickSpriteAdd(itemTextures, "blue-window.png", houseDetails, 3, 2);
 	quickSpriteAdd(buildTextures,buildTextureMap.get("castle-shadow-BR"), houseDetails, 4, 2);
 	scene.addChild(houseDetails);
 

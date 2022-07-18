@@ -310,10 +310,11 @@ function barn() {
 			sheep.texture = specialTextures[sheepTexture[r]];
 		}
 		let interaction = collisionDetector(handsome, sheep, "sheep");
+		/**
 		if (interaction == "sheep") {
 			n = Math.floor(Math.random() * sheepTexture.length);
 			sheep.texture = specialTextures[sheepTexture[n]];
-		}
+		}**/
 	});
 
 	// don't climb up the wall

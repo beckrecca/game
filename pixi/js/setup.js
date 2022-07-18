@@ -46,7 +46,7 @@ function setup() {
 	keyLogic(characterTextures);
 	
 	// Set the game state: MAIN IS worldMap
-	state = barn;
+	state = northWest;
 	//state = worldMap;
 
 	// Start the game loop
