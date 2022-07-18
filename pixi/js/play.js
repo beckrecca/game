@@ -2,7 +2,7 @@
 *	SET (as in MOVIE SET) HELPERS
 */
 
-function roomBackground(width, height, wallTexture = Texture.WHITE, name = "wall") {
+function roomBackground(width, height, name = "wall", wallTexture = Texture.WHITE) {
 	scene = new Container();
 	// a wall
 	wallContainer = new Container();
@@ -40,7 +40,7 @@ function roomBackground(width, height, wallTexture = Texture.WHITE, name = "wall
 
 function prologueBackground() {
 	// create the prologue scene
-	scene = roomBackground(448, 320);
+	scene = roomBackground(448, 320, 'Bedroom Wall');
 	app.stage.addChild(scene);
 	scene.x = 32;
 	scene.y = 32;
@@ -98,7 +98,7 @@ function prologueBackground() {
 
 function barnBackground() {
 	// create the barn scene
-	scene = roomBackground(448, 320);
+	scene = roomBackground(448, 320, 'Barn wall');
 	app.stage.addChild(scene);
 	scene.x = 32;
 	scene.y = 32;
@@ -108,8 +108,6 @@ function barnBackground() {
 		floorTiles = quickSpriteRepeater(buildTextures[buildTextureMap.get("dirt-light-none")], scene.width/32, 3.5 + f)
 		scene.addChild(floorTiles);
 	}
-	console.log(floorTiles.width);
-
 	// add a wall
 	barnWall = new Sprite(Texture.WHITE);
 	barnWall.tint = 0x894B1D;
@@ -162,16 +160,76 @@ function barnBackground() {
 
 function dreamBackground() {
 	// create the dream scene
-	skyContainer = new Container;
+	scene = roomBackground(448, 320, 'dream');
+	app.stage.addChild(scene);
+	scene.x = 32;
+	scene.y = 32;
 	sky = new Sprite(Texture.WHITE);
 	sky.tint = 0x2B2F6F;
-	sky.width = 448;
-	sky.height = 320;
-	skyContainer.x = 32;
-	skyContainer.y = 32;
-	skyContainer.addChild(sky);
-	app.stage.addChild(skyContainer);
-	return skyContainer;
+	sky.width = scene.width;
+	sky.height = scene.height;
+	scene.addChild(sky);
+	return scene;
+}
+
+function poofVillageBackground() {
+	// create the barn scene
+	scene = roomBackground(448, 320, 'Village Buildings');
+	app.stage.addChild(scene);
+
+	scene.x = 32;
+	scene.y = 32;
+
+	// the background
+	bgContainer = new Container();
+	let bgSprite = new Sprite(Texture.WHITE);
+	setPosition(bgContainer, 0, 0);
+	bgSprite.tint = 0x6DC3CB;
+	bgSprite.width = scene.width;
+	bgSprite.height = scene.height/4 + 32;
+	bgContainer.addChild(bgSprite);
+	scene.addChild(bgContainer);
+
+	// the ground
+	for (let f = 0; f < 7; f++) {
+		grassTiles = quickSpriteRepeater(backgroundTextures[backgroundMap.get("grass-full-210")], scene.width/32, 3.5 + f)
+		scene.addChild(grassTiles);
+	}
+
+	// add some buildings
+	townHouseWest = buildHouse("orange");
+	scene.addChild(townHouseWest);
+	townHouseCenter = buildHouse("green");
+	setPosition(townHouseCenter, 7, 0);
+	scene.addChild(townHouseCenter);
+	return scene;
+}
+
+function poofVillage() {
+	// exit any other scene
+	northWestRegionScene.visible = false;
+	northEastRegionScene.visible = false;
+	centralRegionScene.visible = false;
+	southWestRegionScene.visible = false;
+	worldScene.visible = false;
+	prologueScene.visible = false;
+	barnScene.visible = false;
+
+	// show this scene
+	poofVillageScene.visible = true;
+
+	// add handsome
+	poofVillageScene.addChild(handsome);
+	containPlayer(handsome);
+
+	// don't walk up buildings etc
+	untreadablesArray.forEach(function(u) {
+		if (u[2] == "room") {
+			contained = u[0];
+			name = u[1];
+			let place = worldMapNavigator(handsome, contained, name);
+		}
+	});
 }
 
 function prologue() {
@@ -181,6 +239,10 @@ function prologue() {
 	centralRegionScene.visible = false;
 	southWestRegionScene.visible = false;
 	worldScene.visible = false;
+	barnScene.visible = false;
+	dreamScene.visible = false;
+	sheepScene.visible = false;
+	poofVillageScene.visible = false;
 
 	// show this scene
 	prologueScene.visible = true;
@@ -238,6 +300,7 @@ function goToBed() {
 	centralRegionScene.visible = false;
 	southWestRegionScene.visible = false;
 	worldScene.visible = false;
+	barnScene.visible = false;
 
 	// Cover up our unstoppable tempPlayer
 	quickSpriteAdd(itemTextures, "tv-dark.png", prologueScene, 8, 6);
@@ -290,6 +353,8 @@ function barn() {
 	southWestRegionScene.visible = false;
 	worldScene.visible = false;
 	prologueScene.visible = false;
+	sheepScene.visible = false;
+	dreamScene.visible = false;
 
 	// get the sheeps ready
 	barnScene.visible = true;
@@ -340,7 +405,7 @@ function barn() {
 			keyboard("Enter").press = () => {
 				// Exit to Poof Mountains for now
 				setPosition(handsome, 13, 8);
-				state = central;
+				state = poofVillage;
 			};
 		}
 	});
@@ -348,7 +413,7 @@ function barn() {
 
 function sleeplayer() {
 	prologueScene.visible = false;
-	dreamScene = dreamBackground();
+	barnScene.visible = false;
 	dreamScene.visible = true;
 
 	keyboard("Enter").press = () => {
@@ -357,7 +422,14 @@ function sleeplayer() {
 }
 
 function dreamlayer() {
-	dreamScene.visible = true;
+	// exit any other scene
+	northWestRegionScene.visible = false;
+	northEastRegionScene.visible = false;
+	centralRegionScene.visible = false;
+	southWestRegionScene.visible = false;
+	worldScene.visible = false;
+	prologueScene.visible = false;
+	barnScene.visible = false;
 
 	for (let g = 0; g < 25; g++) {
 		cloudTexture = ["cloudblue-0.png", "cloudpink-86.png"];
@@ -374,8 +446,16 @@ function dreamlayer() {
 }
 
 function sheeplayer() {
+	// exit any other scene
+	northWestRegionScene.visible = false;
+	northEastRegionScene.visible = false;
+	centralRegionScene.visible = false;
+	southWestRegionScene.visible = false;
+	worldScene.visible = false;
+	prologueScene.visible = false;
 	dreamScene.visible = false;
-	sheepScene = dreamBackground();
+	barnScene.visible = false;
+	poofVillageScene.visible = false;
 	sheepScene.visible = true;
 
 	for (let baa = 0; baa < 25; baa++) {

@@ -184,8 +184,16 @@ function buildHouse(kind = "castle") {
 	if (kind == "castle") {
 		windowTexture = "blue-window.png";
 	}
-	else {
+	else if (kind == "red-brick") {
 		windowTexture = "red-window.png";
+	}
+	else if (kind == "green") {
+		kind = "castle";
+		windowTexture = "green-window.png";
+	}
+	else if (kind == "orange") {
+		kind = "red-brick";
+		windowTexture = "orange-window.png";
 	}
 	buildHouseContainer = new Container();
 

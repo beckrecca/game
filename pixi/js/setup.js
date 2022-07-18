@@ -26,6 +26,11 @@ function setup() {
 	// Create the prologue
 	prologueScene = prologueBackground();
 	barnScene = barnBackground();
+	dreamScene = dreamBackground();
+	sheepScene = dreamBackground();
+	
+	// Create the Central scenes
+	poofVillageScene = poofVillageBackground();
 
 	// Create a background for our map world
 	worldScene = worldMapScene();
@@ -46,7 +51,7 @@ function setup() {
 	keyLogic(characterTextures);
 	
 	// Set the game state: MAIN IS worldMap
-	state = northWest;
+	state = prologue;
 	//state = worldMap;
 
 	// Start the game loop
